@@ -3,7 +3,7 @@
 ![Neos Project](https://img.shields.io/badge/Neos-%20%3E=%203.2%20-blue.svg "Neos Project")
 ![PHP 7.1 and above](https://img.shields.io/badge/PHP-%20%3E=%207.1%20-blue.svg "PHP >= 7.1")
 
-This package provides a simple to use backend module and frontend container to run A/B Tests. </br>
+This package provides a simple to use backend module and frontend container to run A/B Tests in Neos.  
 
 
 ## Installation
@@ -51,6 +51,7 @@ Wysiwyg:
       name: 'WYSIWYG_AB_TESTING'  
       lifetime: '+2 years'  
 ```
+
 You can change the cookie name to your own name.  
 Per default the cookie has a lifetime for 2 years. Whenever you need less or a longer lifetime, please note that we use strtotime().
 Whenever you change this value, it must apply [strtotime()](https://www.php.net/manual/de/function.strtotime.php).
@@ -62,7 +63,8 @@ By default the cookie is named "WYSIWYG_AB_TESTING".
 This cookie will be created whenever a user enters the webpage for the first time.  
 Content of the cookie is a raw json string, which includes all names of the features and their decision (a or b).  
 Whenever a user has a cookie and enters the page, the cookie will be checked if all active features are saved with a decision.  
-If there are new features these will be added to the cookie and a new json string will be saved with all decisions.
+If there are new features these will be added to the cookie and a new json string will be saved with all decisions.  
+By default the cookie has a lifetime of two years. This is a default value which can be override.
  
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.  
@@ -70,7 +72,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 ## Planned Features
 We want to enhance the A/B Testing with more solid features.  
 We are happy for any contribution for these features and looking forward to enhance this package.
-* Decider-Chaining <br>
+* Decider-Chaining  
 Right now it's possible to only add one decision to a feature.  
 We want to make it possible to add a chaining of deciders for example DimensionDecision AND Percentage.
 
