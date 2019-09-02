@@ -34,7 +34,7 @@ class ABTestingSession
 
     /**
      * @param $feature
-     * @return string
+     * @return string | null
      * @Flow\Session(autoStart = TRUE)
      */
     public function getDecisionForFeature($feature)

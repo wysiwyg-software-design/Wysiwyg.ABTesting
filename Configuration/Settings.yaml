@@ -42,3 +42,9 @@ Neos:
             abTesting:
               position: 'after redirect'
               component: Wysiwyg\ABTesting\Domain\Http\AbTestingCookieComponent
+
+Wysiwyg:
+  AbTesting:
+    cookie:
+      name: 'WYSIWYG_AB_TESTING'
+      lifetime: '+2 years'

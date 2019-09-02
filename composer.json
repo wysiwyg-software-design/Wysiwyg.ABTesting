@@ -3,7 +3,8 @@
     "description": "A/B Testing for Neos",
     "type": "neos-plugin",
     "require": {
-        "neos/neos": ">3.2"
+        "php": ">=7.1",
+        "neos/neos": ">3.2 <5.0"
     },
     "autoload": {
         "psr-4": {
