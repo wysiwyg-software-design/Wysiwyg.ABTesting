@@ -60,6 +60,7 @@ class AbTestingCookieComponent implements ComponentInterface
      */
     private function createCookieToResponse(ComponentContext $componentContext, $response): void
     {
+
         $abTestingCookie = new Cookie($this->cookieSettings['name'], null, strtotime($this->cookieSettings['lifetime']), null, null, '/', false, false);
 
         $decisionsAsJson = json_encode($this->decisionService->decideForAllFeatures());

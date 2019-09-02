@@ -44,7 +44,7 @@ Neos:
               component: Wysiwyg\ABTesting\Domain\Http\AbTestingCookieComponent
 
 Wysiwyg:
-  AbTesting:
+  ABTesting:
     cookie:
       name: 'WYSIWYG_AB_TESTING'
       lifetime: '+2 years'

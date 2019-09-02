@@ -1,4 +1,4 @@
-var WY = WY || {};
+let WY = WY || {};
 
 WY.AbTesting = {
 

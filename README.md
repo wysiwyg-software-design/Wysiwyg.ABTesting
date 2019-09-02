@@ -15,28 +15,27 @@ composer require wysiwyg/neos-abtesting
 ```
 
 ## Usage
-Für die Ausspielung, ob jeweils Version A oder B ausgespielt wird, bietet dieses Package einen Node-Container.
-  
-Dieser Node-Container kann unter folgenden Namen in Constraints hinzugefügt werden:  
-`'Wysiwyg.ABTesting:ABTestingContainer'`  
-In diesem Container finden sich zwei Content-Collections:  
+This package offers a Node-Container for displaying two different nodes for each decision, weather it should display nodes for version A or B. 
+
+You can add the A/B Testing Container to your constraints 
+`Wysiwyg.ABTesting:ABTestingContainer`  
+This container has two contentCollections:
 * itemsa
 * itemsb
 
-Für diese Collections sind bisher keine Constrains vorgesehen.  
-Dies kann jedoch je nach Bedarf angepasst werden, durch überschreibung in eigenen NodeTypes.yaml Dateien.  
-In diesen Collections ist es vorgesehen, für die jeweilige Version die Content Elemente hinzuzufügen.  
-Dies geschieht durch den Redakteur.  
+These collections accept all content nodes.
+This can be changed by override the Node in your own NodeTypes.yaml file.
+An editor has to put nodes in each collection for the given version.
 
 **IMPORTANT**  
-Im Neos Backend werden immer beide Versionen ausgespielt.  
-Im Frontend wird per default Version A ausgespielt.  
+Both versions will always be rendered in the Neos backend.
+Per default version a will be displayed in frontend, if no feature has been configured.
 
-Im Inspector hat dieser Container eine neue Gruppe "A / B Testing".  
-Diese Gruppe beinhaltet ein Dropdown, in dem man den Test (bzw das Feature) auswählt.  
-Alle Tests, die hier erscheinen werden im dazugehörigen Backend-Modul definiert und erscheinen dann in diesem Dropdown.  
+You can find an option group "A / B Testing" in each ABTestingContainer.
+This group provides a dropdown to chose which feature will be used for the container.
 
-### Bedienung des Backend-Modules
+### Backend-Module usage
+You will find a new menu "A/B Testing"
 Im Menü links erscheint ein neues Module "A/B Testing" und als Submodule "Tests".  
 Bei klick auf das Module, wird man auf das Dashboard weitergeleitet, welches alle Submodules anzeigt.  
 Das Tests Submodule bietet in dieser Übersicht direkt zwei Buttons zur Auswahl:  
@@ -53,6 +52,13 @@ Sollte das der Fall sein, wird der Wert des Cookies neugeschrieben, mit den jewe
  
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
- 
+
+## Planned Features
+We want to enhance the A/B Testing with more solid features. <br>
+We are happy for any contribution for these features and looking forward to enhance this package.
+* Decider-Chaining <br>
+Right now it's possible to only add one decision to a feature. <br>
+We want to make it possible to add a chaining of deciders for example DimensionDecision AND Percentage.
+
 ## License
 The MIT License (MIT). Please see [License File](LICENSE) for more information.

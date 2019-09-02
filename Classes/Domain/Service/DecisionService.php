@@ -68,13 +68,14 @@ class DecisionService
             return $decision;
         }
 
+
         $decisionsForFeature = $this->decisionRepository->findByFeature($feature);
 
         /**
          * @var Decision $singleDecision
          */
         foreach ($decisionsForFeature as $singleDecision) {
-            $decider = $this->deciderFactory->getDecider($singleDecision->getDecider());
+            $decider = $singleDecision->getDecider();
 
             if (!$decider instanceof DeciderInterface) {
                 return false;

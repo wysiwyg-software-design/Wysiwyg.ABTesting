@@ -31,24 +31,24 @@
                             <f:link.action action="toggleActive" arguments="{feature: feature}" class="neos-button neos-button-primary" title="Toggle Active" additionalAttributes="{data-neos-toggle: 'tooltip'}">
                                 <f:if condition="{feature.active}">
                                     <f:then>
-                                        <i class="fas fa-pencil-pause icon-white"></i>
+                                        <i class="fas fa-pause icon-white"></i>
                                     </f:then>
                                     <f:else>
-                                        <i class="fas fa-pencil-play icon-white"></i>
+                                        <i class="fas fa-play icon-white"></i>
                                     </f:else>
                                 </f:if>
                             </f:link.action>
 
                             <f:link.action action="showFeature" arguments="{feature: feature}" class="neos-button neos-button-primary" title="Show Feature" additionalAttributes="{data-neos-toggle: 'tooltip'}">
-                                <i class="fas fa-pencil-info-sign icon-white"></i>
+                                <i class="fas fa-info-circle icon-white"></i>
                             </f:link.action>
 
                             <f:link.action action="editFeature" arguments="{feature: feature}" class="neos-button neos-button-primary" title="Edit Feature" additionalAttributes="{data-neos-toggle: 'tooltip'}">
-                                <i class="fas fa-pencil-pencil icon-white"></i>
+                                <i class="fas fa-pencil-alt icon-white"></i>
                             </f:link.action>
 
                             <f:link.action action="deleteFeature" arguments="{feature: feature}" class="neos-button neos-button-danger" title="Delete Feature" additionalAttributes="{data-neos-toggle: 'tooltip'}">
-                                <i class="fas fa-pencil-trash icon-white"></i>
+                                <i class="fas fa-trash icon-white"></i>
                             </f:link.action>
 
                         </div>

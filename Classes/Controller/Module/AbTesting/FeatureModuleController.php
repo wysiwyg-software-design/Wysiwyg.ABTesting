@@ -213,7 +213,6 @@ class FeatureModuleController extends AbstractModuleController
      */
     public function saveDecisionToFeatureAction($decision)
     {
-        $decision->setPriority(0);
         $this->decisionRepository->add($decision);
         $this->redirect('listFeatures');
     }

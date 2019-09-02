@@ -14,7 +14,7 @@
                 <f:for each="{decisions}" as="singleDecision">
                     <tr>
                         <td>
-                            {singleDecision.decider}
+                            {singleDecision.decider.deciderName}
                         </td>
                         <f:for each="{singleDecision.decision}" key="decisionKey" as="decisionValue">
                             <td>{decisionValue}</td>
