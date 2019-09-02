@@ -1,0 +1,4 @@
+Wysiwyg\ABTesting\Domain\Decider\PercentageDecider:
+  properties:
+    deciderName:
+      value: 'Percentage'

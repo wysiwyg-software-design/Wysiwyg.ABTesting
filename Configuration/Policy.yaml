@@ -1,0 +1,25 @@
+privilegeTargets:
+  'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+    'Wysiwyg.ABTesting:Module.AbTesting':
+      matcher: 'method(Wysiwyg\ABTesting\Controller\Module\AbTestingController->(?<!initialize).*Action())'
+    'Wysiwyg.ABTesting:Module.AbTesting.Feature':
+      matcher: 'method(Wysiwyg\ABTesting\Controller\Module\AbTesting\FeatureModuleController->(?<!initialize).*Action())'
+
+roles:
+  'Neos.Neos:Administrator':
+    privileges:
+      -
+        privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting'
+        permission: GRANT
+      -
+        privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting.Feature'
+        permission: GRANT
+
+  'Wysiwyg.ABTesting:ABTester':
+    privileges:
+      -
+        privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting'
+        permission: GRANT
+      -
+        privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting.Feature'
+        permission: GRANT

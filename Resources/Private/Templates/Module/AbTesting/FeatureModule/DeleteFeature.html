@@ -1,0 +1,34 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+<f:layout name="BackendSubModule"/>
+
+<f:section name="content">
+    <f:if condition="{deletable}">
+        <f:then>
+            <f:form action="deleteFeatureConfirmed" object="{feature}" objectName="feature">
+                <div class="neos-row-fluid">
+                    <p>Are you sure, you want to delete the Feature?</p>
+                </div>
+                <div class="neos-footer">
+                    <f:link.action action="listFeatures" class="neos-button">Cancel</f:link.action>
+                    <f:form.submit value="Delete Feature" class="neos-button neos-button-primary"/>
+                </div>
+            </f:form>
+        </f:then>
+        <f:else>
+            <div class="neos-row-fluid">
+                <h3>
+                    Feature can't be deleted.
+                </h3>
+                <p>
+                    Please remove the A/B Testing Feature on all pages to delete this feature.
+                </p>
+            </div>
+            <div class="neos-row-fluid">
+                <f:render partial="Module/FeatureModule/PageList" arguments="{_all}" />
+            </div>
+            <div class="neos-footer">
+                <f:link.action action="listFeatures" class="neos-button">Back to List</f:link.action>
+            </div>
+        </f:else>
+    </f:if>
+</f:section>

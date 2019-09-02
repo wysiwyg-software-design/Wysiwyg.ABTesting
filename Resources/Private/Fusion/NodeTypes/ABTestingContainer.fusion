@@ -1,0 +1,67 @@
+prototype(Wysiwyg.ABTesting:ABTestingContainer) {
+    @context.testingAorB = ${Wysiwyg.ABTesting.Decisions.getDecisionForFeature(q(node).property('abTest'), request.arguments.forceABVersion)}
+    abTestFeature = ${Wysiwyg.ABTesting.Features.getFeatureById(q(node).property('abTest'))}
+
+    @context.itemsA = Neos.Neos:ContentCollection {
+        tagName = 'section'
+        nodePath = 'itemsA'
+
+        content = Neos.Fusion:Array {
+            header = Neos.Fusion:Tag {
+                tagName = 'div'
+                attributes.class = 'container bg-grey'
+                content = 'A/B Testing - Case A'
+
+                @if.onlyInBackend = ${node.context.inBackend}
+            }
+
+            value = Neos.Neos:ContentCollectionRenderer
+        }
+    }
+
+    @context.itemsB = Neos.Neos:ContentCollection {
+        tagName = 'section'
+        nodePath = 'itemsB'
+
+        content = Neos.Fusion:Array {
+            header = Neos.Fusion:Tag {
+                tagName = 'div'
+                attributes.class = 'container bg-grey'
+                content = 'A/B Testing - Case B'
+
+                @if.onlyInBackend = ${node.context.inBackend}
+            }
+
+            value = Neos.Neos:ContentCollectionRenderer
+        }
+    }
+
+    items = Neos.Fusion:Case {
+        showAllInBackend {
+            condition = ${node.context.inBackend == true}
+            renderer = Neos.Fusion:Array {
+                itemsA = ${itemsA}
+
+                itemsB = ${itemsB}
+            }
+        }
+
+        caseB {
+            condition = ${testingAorB == 'b'}
+            renderer = ${itemsB}
+        }
+
+        default {
+            condition = ${true}
+            renderer = ${itemsA}
+        }
+    }
+
+    @cache {
+        mode = 'uncached'
+        context {
+            1 = 'node'
+            2 = 'documentNode'
+        }
+    }
+}

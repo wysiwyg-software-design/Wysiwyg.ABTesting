@@ -1,0 +1,15 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+<f:layout name="BackendSubModule"/>
+
+<f:section name="content">
+    <f:form action="deleteDecisionConfirmed" object="{decision}" objectName="decision">
+        <f:form.hidden property="feature" value="{feature}" />
+        <div class="neos-row-fluid">
+            <p>Are you sure, you want to delete the decision?</p>
+        </div>
+        <div class="neos-footer">
+            <f:link.action action="listFeatures" class="neos-button">Cancel</f:link.action>
+            <f:form.submit value="Delete Decision" class="neos-button neos-button-primary"/>
+        </div>
+    </f:form>
+</f:section>

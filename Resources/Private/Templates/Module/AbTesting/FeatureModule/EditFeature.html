@@ -1,0 +1,50 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+
+<f:layout name="BackendSubModule"/>
+
+<f:section name="subtitle">
+    <legend>Edit Test Feature</legend>
+</f:section>
+
+<f:section name="content">
+    <f:form action="updateFeature" object="{feature}" objectName="feature">
+        <div class="neos-row-fluid">
+            <f:render section="featureSection" arguments="{_all}"/>
+            <f:render partial="Module/FeatureModule/DecisionList" arguments="{_all}"/>
+        </div>
+        <div class="neos-footer">
+            <f:link.action action="listFeatures" class="neos-button">Cancel</f:link.action>
+            <f:form.submit value="Save" class="neos-button neos-button-primary"/>
+        </div>
+    </f:form>
+</f:section>
+
+<f:section name="featureSection">
+    <fieldset class="neos-span5">
+        <div class="neos-control-group{f:validation.ifHasErrors(for: 'featurename', then: ' neos-error')}">
+            <label class="neos-control-label" for="featurename">Test Feature Name</label>
+            <div class="neos-controls">
+                <f:form.textfield property="featureName" id="featurename" class="neos-span12" autofocus="true" required="true"/>
+                <f:render partial="Module/Shared/FieldValidationResults" arguments="{fieldname: 'featureName'}"/>
+            </div>
+        </div>
+        <br>
+        <div class="neos-control-group">
+            <div class="neos-controls">
+                <label for="active" class="neos-checkbox">
+                    <f:form.checkbox property="active" value="true" id="active"/>
+                    <span></span>
+                    Active
+                </label>
+            </div>
+        </div>
+
+        <div class="neos-control-group">
+            <label class="neos-control-label" for="defaultDecision">Default Decision</label>
+            <div class="neos-controls">
+                <f:form.select  property="defaultDecision" id="defaultDecision" class="neos-span12" options="{a: 'A', b:'B'}"/>
+                <f:render partial="Module/Shared/FieldValidationResults" arguments="{fieldname: 'defaultDecision'}"/>
+            </div>
+        </div>
+    </fieldset>
+</f:section>

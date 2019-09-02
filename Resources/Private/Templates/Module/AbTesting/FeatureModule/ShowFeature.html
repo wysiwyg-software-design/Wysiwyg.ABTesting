@@ -1,0 +1,39 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+
+<f:layout name="BackendSubModule" />
+
+<f:section name="subtitle">
+    <legend>A/B Test Feature Data</legend>
+</f:section>
+
+<f:section name="content">
+    <f:form action="showFeature" objectName="feature">
+        <div class="neos-row-fluid">
+            <fieldset class="neos-span5">
+                <legend></legend>
+                <label class="neos-control-label" for="featurename">A/B Test Feature Name</label>
+                <div class="neos-controls">
+                    <f:form.textfield value="{feature.featureName}" disabled="true" id="featurename" class="neos-span12" autofocus="true" required="true" />
+                </div>
+                <br>
+                <div class="neos-control-group">
+                    <div class="neos-controls">
+                        <label for="active" class="neos-checkbox">
+                            <f:form.checkbox checked="{feature.active}" value="true" id="active" disabled="true"/><span></span>
+                            Active
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+            <f:render partial="Module/FeatureModule/DecisionList" arguments="{_all}"/>
+        </div>
+    </f:form>
+    <div class="neos-row-fluid">
+        <f:render partial="Module/FeatureModule/PageList" arguments="{_all}"/>
+    </div>
+    <div class="neos-footer">
+        <f:link.action action="listFeatures" class="neos-button">Back</f:link.action>
+        <f:link.action action="editFeature" arguments="{feature: feature}" class="neos-button"><i class="icon-pencil icon-white"></i> Edit</f:link.action>
+    </div>
+</f:section>
+

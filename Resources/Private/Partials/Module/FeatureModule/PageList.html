@@ -1,0 +1,28 @@
+<fieldset class="neos-span5">
+    <legend>Assigned Pages</legend>
+    <table class="neos-table">
+        <tbody>
+        <f:if condition="{pages}">
+            <f:then>
+                <f:for each="{pages}" as="page">
+                    <tr>
+                        <td>
+                            {page.properties.title}
+                        </td>
+                        <td>
+                            <neos:link.node node="{page}" class="neos-pull-right"><i class="icon-eye"></i></neos:link.node>
+                        </td>
+                    </tr>
+                </f:for>
+            </f:then>
+            <f:else>
+                <tr>
+                    <td>
+                        No pages assigned for this feature.
+                    </td>
+                </tr>
+            </f:else>
+        </f:if>
+        </tbody>
+    </table>
+</fieldset>

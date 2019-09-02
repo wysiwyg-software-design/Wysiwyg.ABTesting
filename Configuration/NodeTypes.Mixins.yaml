@@ -1,0 +1,24 @@
+'Wysiwyg.ABTesting:ABTestingMixin':
+  abstract: TRUE
+  superTypes:
+    'Wysiwyg.ABTesting:Mixins.FeatureProperty': true
+  ui:
+    inspector:
+      groups:
+        abTesting:
+          label: 'A / B Testing'
+          icon: 'icon-eye'
+
+'Wysiwyg.ABTesting:Mixins.FeatureProperty':
+  abstract: TRUE
+  properties:
+    abTest:
+      type: string
+      ui:
+        label: 'A/B Test Feature'
+        inspector:
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
+          position: 10
+          group: abTesting
+          editorOptions:
+            dataSourceIdentifier: 'wysiwyg-abtesting-features'

@@ -1,0 +1,44 @@
+Neos:
+  Fusion:
+    defaultContext:
+      'Wysiwyg.ABTesting.Decisions': 'Wysiwyg\ABTesting\Eel\DecisionHelper'
+      'Wysiwyg.ABTesting.Features': 'Wysiwyg\ABTesting\Eel\FeatureHelper'
+  Neos:
+    userInterface:
+      translation:
+        autoInclude:
+          Wysiwyg.ABTesting:
+            - Main
+
+    fusion:
+      autoInclude:
+        'Wysiwyg.ABTesting': TRUE
+
+    modules:
+      AbTesting:
+        label: 'A/B Testing'
+        description: 'A/B Testing Dashboard'
+        controller: Wysiwyg\ABTesting\Controller\Module\AbTestingController
+        icon: icon-briefcase
+        submodules:
+          features:
+            icon: icon-cog
+            label: 'Features'
+            description: 'Configurations of A/B Testing Features'
+            controller: Wysiwyg\ABTesting\Controller\Module\AbTesting\FeatureModuleController
+            widgetTemplatePathAndFileName: 'resource://Neos.Neos/Private/Templates/Module/Widget.html'
+            actions:
+              newFeature:
+                label: 'Create Feature'
+                title: 'Create Feature'
+              listFeatures:
+                label: 'Feature List'
+                title: 'Feature List'
+  Flow:
+    http:
+      chain:
+        process:
+          chain:
+            abTesting:
+              position: 'after redirect'
+              component: Wysiwyg\ABTesting\Domain\Http\AbTestingCookieComponent
