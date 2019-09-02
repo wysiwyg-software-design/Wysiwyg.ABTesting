@@ -40,6 +40,8 @@
         </tbody>
     </table>
     <div class="neos-pull-right">
-        <f:link.action action="addDecisionToFeature" arguments="{feature: feature}" class="neos-button neos-button-primary"><i class="fas fa-plus icon-white"></i> Add Decision</f:link.action>
+        <f:if condition="!{decisions}">
+            <f:link.action action="addDecisionToFeature" arguments="{feature: feature}" class="neos-button neos-button-primary"><i class="fas fa-plus icon-white"></i> Add Decision</f:link.action>
+        </f:if>
     </div>
 </fieldset>
