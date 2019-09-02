@@ -29,9 +29,10 @@ class Feature
     protected $decisions;
 
     /**
+     * @ORM\Column(nullable=true)
      * @var string
      */
-    protected $defaultDecision;
+    protected $defaultDecision = null;
 
     /**
      * @return string
