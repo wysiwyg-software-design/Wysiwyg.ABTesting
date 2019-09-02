@@ -35,29 +35,43 @@ You can find an option group "A / B Testing" in each ABTestingContainer.
 This group provides a dropdown to chose which feature will be used for the container.
 
 ### Backend-Module usage
-You will find a new menu "A/B Testing"
-Im Menü links erscheint ein neues Module "A/B Testing" und als Submodule "Tests".  
-Bei klick auf das Module, wird man auf das Dashboard weitergeleitet, welches alle Submodules anzeigt.  
-Das Tests Submodule bietet in dieser Übersicht direkt zwei Buttons zur Auswahl:  
-* "Create Feature": ein neues Test Feature anlegen
-* "Feature List": listet eine Übersicht aller Tests Features auf
+You will find a new menu "A/B Testing" in the main menu on the left in the Neos backend.
+The module "Features" will offer all necessary functions to manage A/B testing features.
+Clicking on the module, you will be redirected to the A/B Testing dashboard.
+* "Create Feature": Add a new A/B Test feature
+* "Feature List": Shows a list of all A/B Test Features
 
-### Regarding Privacy (i.e. GDPR)
-Die A/B Testing Entscheidungen, welche Version ausgespielt wird, werden in einem Cookie gespeichert.  
-Dieser Cookie wird unter den Namen "WYSIWYG_AB_TESTING" abgespeichert, wenn man die Webseite zum ersten Mal aufruft.  
-Der Inhalt dieses Cookies ist ein json String, welcher alle Namen der Features und die Entscheidung (a oder b) enthaltet.  
-Bei jedem Aufruf auf der Seite wird ein geprüft, ob neue Tests existieren, die nicht im Cookie abgespeichert sind.  
-Sollte das der Fall sein, wird der Wert des Cookies neugeschrieben, mit den jeweiligen neuen json string, der alle Entscheidungen beinhaltet.  
+## Settings
+This package uses default values for creating the used cookie.  
+We offer several settings which can be modified for your own usage.  
+```
+Wysiwyg:  
+  ABTesting:  
+    cookie:  
+      name: 'WYSIWYG_AB_TESTING'  
+      lifetime: '+2 years'  
+```
+You can change the cookie name to your own name.  
+Per default the cookie has a lifetime for 2 years. Whenever you need less or a longer lifetime, please note that we use strtotime().
+Whenever you change this value, it must apply [strtotime()](https://www.php.net/manual/de/function.strtotime.php).
 
+
+## Regarding Privacy (i.e. GDPR)
+All A/B Testing decisions will be saved into a cookie.  
+By default the cookie is named "WYSIWYG_AB_TESTING".  
+This cookie will be created whenever a user enters the webpage for the first time.  
+Content of the cookie is a raw json string, which includes all names of the features and their decision (a or b).  
+Whenever a user has a cookie and enters the page, the cookie will be checked if all active features are saved with a decision.  
+If there are new features these will be added to the cookie and a new json string will be saved with all decisions.
  
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.  
 
 ## Planned Features
-We want to enhance the A/B Testing with more solid features. <br>
+We want to enhance the A/B Testing with more solid features.  
 We are happy for any contribution for these features and looking forward to enhance this package.
 * Decider-Chaining <br>
-Right now it's possible to only add one decision to a feature. <br>
+Right now it's possible to only add one decision to a feature.  
 We want to make it possible to add a chaining of deciders for example DimensionDecision AND Percentage.
 
 ## License
