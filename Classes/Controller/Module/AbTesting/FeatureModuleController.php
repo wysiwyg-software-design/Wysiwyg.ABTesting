@@ -78,16 +78,14 @@ class FeatureModuleController extends AbstractModuleController
      */
     public function showFeatureAction($feature)
     {
-        if ($feature) {
-            $decisions = $this->decisionRepository->findByFeature($feature);
-            $pages = $this->featureService->getPagesWithFeature($feature);
+        $decisions = $this->decisionRepository->findByFeature($feature);
+        $pages = $this->featureService->getPagesWithFeature($feature);
 
-            $this->view->assignMultiple([
-                'decisions' => $decisions,
-                'feature' => $feature,
-                'pages' => $pages
-            ]);
-        }
+        $this->view->assignMultiple([
+            'decisions' => $decisions,
+            'feature' => $feature,
+            'pages' => $pages
+        ]);
     }
 
     /**
@@ -97,11 +95,7 @@ class FeatureModuleController extends AbstractModuleController
     public function deleteFeatureAction($feature)
     {
         $pages = $this->featureService->getPagesWithFeature($feature);
-        $deletable = true;
-
-        if (count($pages) > 0) {
-            $deletable = false;
-        }
+        $deletable = count($pages) == 0;
 
         $this->view->assignMultiple([
             'feature' => $feature,
@@ -132,14 +126,12 @@ class FeatureModuleController extends AbstractModuleController
      */
     public function editFeatureAction($feature)
     {
-        if ($feature) {
-            $decisions = $this->decisionRepository->findByFeature($feature);
+        $decisions = $this->decisionRepository->findByFeature($feature);
 
-            $this->view->assignMultiple([
-                'decisions' => $decisions,
-                'feature' => $feature
-            ]);
-        }
+        $this->view->assignMultiple([
+            'decisions' => $decisions,
+            'feature' => $feature
+        ]);
     }
 
     /**
@@ -185,21 +177,18 @@ class FeatureModuleController extends AbstractModuleController
         $assignableDeciderObjects = [];
         $deciderToIgnore = [];
 
-        /**
-         * @var Decision $decision
-         */
+        /** @var Decision $decision */
         foreach ($feature->getDecisions() as $decision) {
             $deciderToIgnore[] = $decision->getDecider();
         }
 
-        /**
-         * @var DeciderObject $deciderObject
-         */
+        /** @var DeciderObject $deciderObject */
         foreach ($deciderObjectsRaw as $deciderObject) {
             if (!in_array($deciderObject->getDecider(), $deciderToIgnore)) {
                 $assignableDeciderObjects[] = $deciderObject;
             }
         }
+
         $this->view->assignMultiple([
             'feature' => $feature,
             'deciderObjects' => $assignableDeciderObjects

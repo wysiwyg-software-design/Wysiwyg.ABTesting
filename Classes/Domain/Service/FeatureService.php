@@ -12,7 +12,6 @@ use Wysiwyg\ABTesting\Domain\Repository\FeatureRepository;
 
 class FeatureService
 {
-
     /**
      * @Flow\Inject
      * @var ContextFactoryInterface

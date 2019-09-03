@@ -47,4 +47,4 @@ Wysiwyg:
   ABTesting:
     cookie:
       name: 'WYSIWYG_AB_TESTING'
-      lifetime: '+2 years'
+      lifetime: '+2 years' # will be used for strtotime

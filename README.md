@@ -34,6 +34,19 @@ Per default version A will be displayed in the frontend if no feature has been c
 You can find an option group "A / B Testing" in each ABTestingContainer.
 This group provides a dropdown menu to choose which feature will be used for the container.
 
+#### Preview Different Versions
+Sometimes it is necessary to view a different version of the feature.  
+For viewing a different version add the "forceABVersion" GET-parameter into the url and assign the desired version as value.  
+  
+  
+Example:  
+Show Version A  
+```https://example.com/greatFeature.html?forceABVersion=a```  
+Show Version B  
+```https://example.com/greatFeature.html?forceABVersion=b```  
+
+This parameter will not override the cookie decision.
+
 ### Backend-Module Usage
 You will find a new "A/B Testing" menu item in the main menu of the Neos backend.
 The module "Features" will offer all necessary functions to manage A/B testing features.

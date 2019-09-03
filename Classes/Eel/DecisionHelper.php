@@ -9,10 +9,6 @@ use Wysiwyg\ABTesting\Domain\Model\Feature;
 use Wysiwyg\ABTesting\Domain\Repository\FeatureRepository;
 use Wysiwyg\ABTesting\Domain\Service\DecisionService;
 
-/**
- * User: sven <wuetherich@wysiwyg.de>
- * Date: 02.07.2018
- */
 class DecisionHelper implements ProtectedContextAwareInterface
 {
 
@@ -29,42 +25,33 @@ class DecisionHelper implements ProtectedContextAwareInterface
     protected $featureRepository;
 
     /**
-     * Returns a calculated decision-string for given Test by Name
+     * Returns a calculated decision-string for given feature.
      *
      * @param Feature $feature
      * @param string $forcedDecision
      * @return string | boolean
      * @Flow\Session(autoStart = TRUE)
      */
-    public function getDecisionForFeature($feature, $forcedDecision = null)
+    public function getDecisionForFeature(Feature $feature, string $forcedDecision = '')
     {
-        $decision = false;
-
         if ($forcedDecision) {
-            return $forcedDecision;
+            return strtolower($forcedDecision);
         }
 
-        if (is_string($feature)) {
-            $feature = $this->featureRepository->findByIdentifier($feature);
-        }
-
-        if ($feature) {
-            return $this->decisionService->getDecisionForFeature($feature);
-        }
-
-        return $decision;
+        return $this->decisionService->getDecisionForFeature($feature);
     }
 
     /**
-     * Returns a decision for a Feature by featureName.
+     * Returns a decision for a feature by featureName.
      *
      * @param string $featureName
      * @param string $forcedDecision
-     * @return string | boolean
+     *
+     * @return string|null
      */
-    public function getDecisionForFeatureByName(string $featureName, $forcedDecision = null)
+    public function getDecisionForFeatureByName(string $featureName, string $forcedDecision = '')
     {
-        $decision = false;
+        $decision = null;
         $foundFeature = $this->featureRepository->findOneByFeatureName($featureName);
 
         if ($foundFeature instanceof Feature) {

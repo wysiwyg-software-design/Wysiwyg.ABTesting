@@ -31,7 +31,7 @@ class Decision
     /**
      * @return string
      */
-    public function getDeciderClassName(): string
+    public function getDeciderClassName()
     {
         return $this->deciderClassName;
     }
@@ -39,7 +39,7 @@ class Decision
     /**
      * @param string $deciderClassName
      */
-    public function setDeciderClassName(string $deciderClassName): void
+    public function setDeciderClassName(string $deciderClassName)
     {
         $this->deciderClassName = $deciderClassName;
     }

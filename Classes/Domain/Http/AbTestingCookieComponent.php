@@ -58,7 +58,7 @@ class AbTestingCookieComponent implements ComponentInterface
      * @param ComponentContext $componentContext
      * @param $response
      */
-    private function createCookieToResponse(ComponentContext $componentContext, $response): void
+    private function createCookieToResponse(ComponentContext $componentContext, $response)
     {
         $abTestingCookie = new Cookie($this->cookieSettings['name'], null, strtotime($this->cookieSettings['lifetime']), null, null, '/', false, false);
 
@@ -77,7 +77,7 @@ class AbTestingCookieComponent implements ComponentInterface
      * @param $request
      * @param $response
      */
-    private function refreshResponseCookie(ComponentContext $componentContext, $request, $response): void
+    private function refreshResponseCookie(ComponentContext $componentContext, $request, $response)
     {
         $abTestingCookie = $request->getCookie($this->cookieSettings['name']);
         $currentCookieValue = json_decode($abTestingCookie->getValue(), true);

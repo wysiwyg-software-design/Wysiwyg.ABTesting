@@ -14,19 +14,10 @@ class PercentageDecider implements DeciderInterface
      *        'b' => 40
      *  ]
      *
-     * Also supports multiple decisions, for example c will be added
-     * Weighted decision a(40%) b (40%) c (20%)
-     *
-     * [
-     *        'a' => 40,
-     *        'b' => 40,
-     *        'c' => 20
-     * ]
-     *
      * @param array $decisions
-     * @return null|string
+     * @return string|null
      */
-    public function decide(array $decisions) : string
+    public function decide(array $decisions)
     {
         $randomValue = rand(1, 100);
         $tempDecision = 0;

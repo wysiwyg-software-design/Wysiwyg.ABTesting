@@ -15,9 +15,10 @@ class ABTestingSession
     protected $decisions = array();
 
     /**
-     * @param string $decision
-     * @return void
      * @Flow\Session(autoStart = TRUE)
+     * @param string $decision
+     *
+     * @return void
      */
     public function addItem($decision)
     {
@@ -33,9 +34,10 @@ class ABTestingSession
     }
 
     /**
-     * @param $feature
-     * @return string | null
      * @Flow\Session(autoStart = TRUE)
+     * @param $feature
+     *
+     * @return string | null
      */
     public function getDecisionForFeature($feature)
     {
@@ -47,9 +49,10 @@ class ABTestingSession
     }
 
     /**
+     * @Flow\Session(autoStart = TRUE)
+     *
      * @param $feature
      * @param $decision
-     * @Flow\Session(autoStart = TRUE)
      */
     public function setDecisionForFeature($feature, $decision)
     {

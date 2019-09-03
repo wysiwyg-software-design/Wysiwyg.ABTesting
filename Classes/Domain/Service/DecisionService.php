@@ -48,9 +48,10 @@ class DecisionService
      * Since the decision is saved in Session, the session decision is leading and will be returned, if a decision
      * is already saved in Session.
      *
-     * @param Feature $feature
-     * @return string
      * @Flow\Session(autoStart = TRUE)
+     * @param Feature $feature
+     *
+     * @return string|null
      */
     public function getDecisionForFeature($feature)
     {
@@ -61,29 +62,24 @@ class DecisionService
         $featureName = $feature->getFeatureName();
         $decisionFromCookie = $this->getDecisionFromCookies($featureName);
         $decisionFromSession = $this->abTestingSession->getDecisionForFeature($featureName);
-
         $decision = $decisionFromCookie ?: $decisionFromSession;
 
         if ($decision) {
             return $decision;
         }
 
-
         $decisionsForFeature = $this->decisionRepository->findByFeature($feature);
-
-        /**
-         * @var Decision $singleDecision
-         */
+        /**  @var Decision $singleDecision */
         foreach ($decisionsForFeature as $singleDecision) {
             $decider = $singleDecision->getDecider();
 
             if (!$decider instanceof DeciderInterface) {
-                return false;
+                return null;
             }
 
             $decision = $decider->decide($singleDecision->getDecision());
             if (!$decision) {
-                return false;
+                return null;
             }
         }
 
@@ -114,54 +110,15 @@ class DecisionService
         return $deciderObjects;
     }
 
-
-    /**
-     * Decisions are made by priority.
-     *
-     * @todo This should actually make a decision-chaining which is currently not supported.
-     *
-     * @param $decisions
-     * @return array|string
-     * @deprecated still in progress - do not use yet.
-     */
-    private function decideByLeading($decisions)
-    {
-        $tempDecision = [];
-        $decision = '';
-
-        $factory = $this->deciderFactory;
-
-        /**
-         * @var Decision $decisionItem
-         */
-        foreach ($decisions as $decisionItem) {
-            $decider = $factory->getDecider($decisionItem->getDecider());
-            $decisionFromDecider = $decider->decide($decisionItem->getDecision());
-
-            if (is_array($decisionFromDecider)) {
-                $tempDecision = $decisionFromDecider;
-            }
-
-            if (in_array($decisionFromDecider, $tempDecision)) {
-                $decision = $decisionFromDecider;
-            }
-        }
-
-        return $decision;
-    }
-
     /**
      * Decides for every features which are configured in database.
      */
     public function decideForAllFeatures()
     {
         $features = $this->featureRepository->findAll();
-
         $decisions = [];
 
-        /**
-         * @var Feature $feature
-         */
+        /** @var Feature $feature */
         foreach ($features as $feature) {
             if ($feature->isActive() && count($feature->getDecisions()) > 0) {
                 $featureName = str_replace(' ', '_', $feature->getFeatureName());
@@ -174,30 +131,29 @@ class DecisionService
 
     /**
      * @param $featureName
-     * @param $decision
+     * @param $decisionOverride
      */
-    public function forceDecisionOverrideForFeature($featureName, $decision)
+    public function forceDecisionOverrideForFeature($featureName, $decisionOverride)
     {
         $featureRepository = new FeatureRepository();
 
         $feature = $featureRepository->findOneByFeatureName($featureName);
 
         if ($feature instanceof Feature) {
-            $this->abTestingSession->setDecisionForFeature($featureName, $decision);
+            $this->abTestingSession->setDecisionForFeature($featureName, $decisionOverride);
         }
-
     }
 
     /**
      * @param string $featureName
-     * @return string | bool
+     * @return string|null
      */
     public function getDecisionFromCookies($featureName)
     {
         if (array_key_exists('WYSIWYG_AB_TESTING', $_COOKIE)) {
             $decisionsArray = json_decode($_COOKIE['WYSIWYG_AB_TESTING'], true);
 
-            return array_key_exists($featureName, $decisionsArray) ? $decisionsArray[$featureName] : false;
+            return array_key_exists($featureName, $decisionsArray) ? $decisionsArray[$featureName] : null;
         }
     }
 }

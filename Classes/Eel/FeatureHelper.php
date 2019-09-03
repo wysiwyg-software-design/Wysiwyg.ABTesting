@@ -21,7 +21,7 @@ class FeatureHelper implements ProtectedContextAwareInterface
      * @param string $featureId
      * @return Feature
      */
-    public function getFeatureById($featureId)
+    public function getFeatureById(string $featureId)
     {
         return $this->featureRepository->findByIdentifier($featureId);
     }
@@ -30,7 +30,7 @@ class FeatureHelper implements ProtectedContextAwareInterface
      * @param string $methodName
      * @return boolean
      */
-    public function allowsCallOfMethod($methodName)
+    public function allowsCallOfMethod(string $methodName)
     {
         switch ($methodName) {
             case 'getFeatureById':
