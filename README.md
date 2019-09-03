@@ -29,7 +29,7 @@ An editor has to put nodes in each collection for the given version.
 
 **IMPORTANT**  
 Both versions will always be rendered in the Neos backend.
-Per default version a will be displayed in frontend, if no feature has been configured.
+Per default `version A` will be displayed in frontend, if no feature has been configured.
 
 You can find an option group "A / B Testing" in each ABTestingContainer.
 This group provides a dropdown to chose which feature will be used for the container.
