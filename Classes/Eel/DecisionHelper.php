@@ -11,7 +11,6 @@ use Wysiwyg\ABTesting\Domain\Service\DecisionService;
 
 class DecisionHelper implements ProtectedContextAwareInterface
 {
-
     /**
      * @Flow\Inject
      * @var DecisionService
@@ -27,15 +26,16 @@ class DecisionHelper implements ProtectedContextAwareInterface
     /**
      * Returns a calculated decision-string for given feature.
      *
+     * @Flow\Session(autoStart = true)
      * @param Feature $feature
-     * @param string $forcedDecision
+     * @param string $forceABVersion
+     *
      * @return string | boolean
-     * @Flow\Session(autoStart = TRUE)
      */
-    public function getDecisionForFeature(Feature $feature, string $forcedDecision = '')
+    public function getDecisionForFeature(Feature $feature, string $forceABVersion = '')
     {
-        if ($forcedDecision) {
-            return strtolower($forcedDecision);
+        if ($forceABVersion) {
+            return strtolower($forceABVersion);
         }
 
         return $this->decisionService->getDecisionForFeature($feature);
@@ -45,17 +45,17 @@ class DecisionHelper implements ProtectedContextAwareInterface
      * Returns a decision for a feature by featureName.
      *
      * @param string $featureName
-     * @param string $forcedDecision
+     * @param string $forceABVersion
      *
      * @return string|null
      */
-    public function getDecisionForFeatureByName(string $featureName, string $forcedDecision = '')
+    public function getDecisionForFeatureByName(string $featureName, string $forceABVersion = '')
     {
         $decision = null;
         $foundFeature = $this->featureRepository->findOneByFeatureName($featureName);
 
         if ($foundFeature instanceof Feature) {
-            $decision = $this->getDecisionForFeature($foundFeature, $forcedDecision);
+            $decision = $this->getDecisionForFeature($foundFeature, $forceABVersion);
         }
 
         return $decision;
@@ -71,6 +71,7 @@ class DecisionHelper implements ProtectedContextAwareInterface
 
     /**
      * @param string $methodName
+     *
      * @return boolean
      */
     public function allowsCallOfMethod($methodName)

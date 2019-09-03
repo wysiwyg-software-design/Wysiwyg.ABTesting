@@ -36,7 +36,7 @@ This group provides a dropdown menu to choose which feature will be used for the
 
 #### Preview Different Versions
 Sometimes it is necessary to view a different version of the feature.  
-For viewing a different version add the "forceABVersion" GET-parameter into the url and assign the desired version as value.  
+For viewing a different version add the "forceABVersion" GET-parameter into the url and assign the desired version as the value.  
   
   
 Example:  
@@ -45,7 +45,7 @@ Show Version A
 Show Version B  
 ```https://example.com/greatFeature.html?forceABVersion=b```  
 
-This parameter will not override the cookie decision.
+This parameter will not override the cookie value.
 
 ### Backend-Module Usage
 You will find a new "A/B Testing" menu item in the main menu of the Neos backend.

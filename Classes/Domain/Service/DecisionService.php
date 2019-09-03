@@ -48,7 +48,7 @@ class DecisionService
      * Since the decision is saved in Session, the session decision is leading and will be returned, if a decision
      * is already saved in Session.
      *
-     * @Flow\Session(autoStart = TRUE)
+     * @Flow\Session(autoStart = true)
      * @param Feature $feature
      *
      * @return string|null
@@ -136,7 +136,6 @@ class DecisionService
     public function forceDecisionOverrideForFeature($featureName, $decisionOverride)
     {
         $featureRepository = new FeatureRepository();
-
         $feature = $featureRepository->findOneByFeatureName($featureName);
 
         if ($feature instanceof Feature) {
@@ -150,10 +149,11 @@ class DecisionService
      */
     public function getDecisionFromCookies($featureName)
     {
-        if (array_key_exists('WYSIWYG_AB_TESTING', $_COOKIE)) {
-            $decisionsArray = json_decode($_COOKIE['WYSIWYG_AB_TESTING'], true);
-
-            return array_key_exists($featureName, $decisionsArray) ? $decisionsArray[$featureName] : null;
+        if(!array_key_exists('WYSIWYG_AB_TESTING', $_COOKIE)){
+            return null;
         }
+        $decisionsArray = json_decode($_COOKIE['WYSIWYG_AB_TESTING'], true);
+
+        return array_key_exists($featureName, $decisionsArray) ? $decisionsArray[$featureName] : null;
     }
 }

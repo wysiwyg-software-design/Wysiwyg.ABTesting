@@ -60,7 +60,6 @@ class FeatureService
         $foundContainer = $q->find('[instanceof Wysiwyg.ABTesting:ABTestingContainer][abTest][abTest="' . $featureId . '"]')->get();
 
         $pageNodes = [];
-
         /**
          * @var Node $container
          */
@@ -70,7 +69,6 @@ class FeatureService
         }
 
         return $pageNodes;
-
     }
 
     /**

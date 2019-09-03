@@ -5,7 +5,6 @@ namespace Wysiwyg\ABTesting\Controller\Module\AbTesting;
 use Neos\Flow\Annotations as Flow;
 use Neos\Neos\Controller\Module\AbstractModuleController;
 use Wysiwyg\ABTesting\Domain\Dto\DeciderObject;
-use Wysiwyg\ABTesting\Domain\Factory\DeciderFactory;
 use Wysiwyg\ABTesting\Domain\Model\Decision;
 use Wysiwyg\ABTesting\Domain\Model\Feature;
 use Wysiwyg\ABTesting\Domain\Repository\DecisionRepository;
@@ -51,6 +50,7 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Feature $feature
+     *
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
@@ -74,6 +74,7 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Feature $feature
+     *
      * @throws \Neos\Eel\Exception
      */
     public function showFeatureAction($feature)
@@ -90,6 +91,7 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Feature $feature
+     *
      * @throws \Neos\Eel\Exception
      */
     public function deleteFeatureAction($feature)
@@ -106,6 +108,7 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Feature $feature
+     *
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
@@ -114,7 +117,7 @@ class FeatureModuleController extends AbstractModuleController
         $this->featureRepository->remove($feature);
         $decisions = $this->decisionRepository->findByFeature($feature);
 
-        foreach ($decisions as $decision){
+        foreach ($decisions as $decision) {
             $this->decisionRepository->remove($decision);
         }
 
@@ -136,6 +139,7 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Feature $feature
+     *
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
@@ -150,16 +154,13 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Feature $feature
+     *
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
     public function toggleActiveAction($feature)
     {
-        if ($feature->isActive()) {
-            $feature->setActive(false);
-        } else {
-            $feature->setActive(true);
-        }
+        $feature->setActive(!$feature->isActive());
 
         $this->featureRepository->update($feature);
         $this->persistenceManager->persistAll();
@@ -172,7 +173,7 @@ class FeatureModuleController extends AbstractModuleController
      */
     public function addDecisionToFeatureAction($feature)
     {
-        $deciderObjectsRaw = $this->decisionService->getAllDeciderObjects();
+        $deciderObjects = $this->decisionService->getAllDeciderObjects();
 
         $assignableDeciderObjects = [];
         $deciderToIgnore = [];
@@ -183,10 +184,11 @@ class FeatureModuleController extends AbstractModuleController
         }
 
         /** @var DeciderObject $deciderObject */
-        foreach ($deciderObjectsRaw as $deciderObject) {
-            if (!in_array($deciderObject->getDecider(), $deciderToIgnore)) {
-                $assignableDeciderObjects[] = $deciderObject;
+        foreach ($deciderObjects as $deciderObject) {
+            if (in_array($deciderObject->getDecider(), $deciderToIgnore)) {
+                continue;
             }
+            $assignableDeciderObjects[] = $deciderObject;
         }
 
         $this->view->assignMultiple([
@@ -197,6 +199,7 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Decision $decision
+     *
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
@@ -216,6 +219,7 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Decision $decision
+     *
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
@@ -235,6 +239,7 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Decision $decision
+     *
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */

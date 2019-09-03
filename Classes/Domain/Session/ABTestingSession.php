@@ -15,7 +15,7 @@ class ABTestingSession
     protected $decisions = array();
 
     /**
-     * @Flow\Session(autoStart = TRUE)
+     * @Flow\Session(autoStart = true)
      * @param string $decision
      *
      * @return void
@@ -34,7 +34,7 @@ class ABTestingSession
     }
 
     /**
-     * @Flow\Session(autoStart = TRUE)
+     * @Flow\Session(autoStart = true)
      * @param $feature
      *
      * @return string | null
@@ -49,7 +49,7 @@ class ABTestingSession
     }
 
     /**
-     * @Flow\Session(autoStart = TRUE)
+     * @Flow\Session(autoStart = true)
      *
      * @param $feature
      * @param $decision

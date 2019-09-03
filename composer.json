@@ -1,6 +1,7 @@
 {
     "name": "wysiwyg/neos-abtesting",
     "description": "A/B Testing for Neos",
+    "license": "MIT",
     "type": "neos-plugin",
     "require": {
         "php": ">=7.1",
