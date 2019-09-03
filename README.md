@@ -3,7 +3,7 @@
 ![Neos Project](https://img.shields.io/badge/Neos-%20%3E=%203.2%20-blue.svg "Neos Project")
 ![PHP 7.1 and above](https://img.shields.io/badge/PHP-%20%3E=%207.1%20-blue.svg "PHP >= 7.1")
 
-This package provides a simple to use backend module and frontend container to run A/B Tests in Neos.  
+This package provides a simple to use backend module and frontend container to run A/B tests in Neos.  
 
 
 ## Installation
@@ -15,35 +15,35 @@ composer require wysiwyg/neos-abtesting
 ```
 
 ## Usage
-This package offers a Node-Container for displaying two different nodes for each decision, whether it should display nodes for version A or B. 
+This package offers a node container for displaying two different nodes for two different decisions (A or B).
 
-You can add the A/B Testing Container to your constraints 
-`Wysiwyg.ABTesting:ABTestingContainer`  
-This container has two contentCollections:
+You can add the A/B testing container to your constraints: `Wysiwyg.ABTesting:ABTestingContainer`  
+
+The container has two contentCollections:
 * itemsa
 * itemsb
 
-These collections accept all content nodes.
-This can be changed by override the Node in your own NodeTypes.yaml file.
-An editor has to put nodes in each collection for the given version.
+By default these collections accept all content nodes.
+This can be changed by overriding the respective node configuration in your own NodeTypes.yaml file.
+An editor has to put one or more nodes in each content collection.
 
 **IMPORTANT**  
 Both versions will always be rendered in the Neos backend.
-Per default `version A` will be displayed in frontend, if no feature has been configured.
+Per default version A will be displayed in the frontend if no feature has been configured and selected.
 
 You can find an option group "A / B Testing" in each ABTestingContainer.
-This group provides a dropdown to chose which feature will be used for the container.
+This group provides a dropdown menu to choose which feature will be used for the container.
 
-### Backend-Module usage
-You will find a new menu "A/B Testing" in the main menu on the left in the Neos backend.
+### Backend-Module Usage
+You will find a new "A/B Testing" menu item in the main menu of the Neos backend.
 The module "Features" will offer all necessary functions to manage A/B testing features.
-Clicking on the module, you will be redirected to the A/B Testing dashboard.
-* "Create Feature": Add a new A/B Test feature
-* "Feature List": Shows a list of all A/B Test Features
+In the A/B testing dashboard you will find the following options:
+* "Create Feature": Add a new A/B test feature
+* "Feature List": Shows a list of all A/B test features
 
 ## Settings
-This package uses default values for creating the used cookie.  
-We offer several settings which can be modified for your own usage.  
+This package uses default values for creating a cookie.  
+There are several settings which can be modified for your own implementation.  
 ```
 Wysiwyg:  
   ABTesting:  
@@ -52,29 +52,24 @@ Wysiwyg:
       lifetime: '+2 years'  
 ```
 
-You can change the cookie name to your own name.  
-Per default the cookie has a lifetime for 2 years. Whenever you need less or a longer lifetime, please note that we use strtotime().
-Whenever you change this value, it must apply [strtotime()](https://www.php.net/manual/de/function.strtotime.php).
+Per default the cookie has a lifetime of 2 years. Please consider that [strtotime()](https://www.php.net/manual/de/function.strtotime.php) is used to evaluate the lifetime setting's value if you need to adjust it.
 
 
 ## Regarding Privacy (i.e. GDPR)
-All A/B Testing decisions will be saved into a cookie.  
-By default the cookie is named "WYSIWYG_AB_TESTING".  
-This cookie will be created whenever a user enters the webpage for the first time.  
-Content of the cookie is a raw json string, which includes all names of the features and their decision (a or b).  
-Whenever a user has a cookie and enters the page, the cookie will be checked if all active features are saved with a decision.  
-If there are new features these will be added to the cookie and a new json string will be saved with all decisions.  
-By default the cookie has a lifetime of two years. This is a default value which can be override.
- 
+Please note that all A/B testing decisions will be saved in a cookie that by default is named "WYSIWYG_AB_TESTING" and has a lifetime of 2 years.
+This cookie will be created whenever a user opens the webpage for the first time.  
+It contains a raw JSON string which includes all names of the features and their decision (a or b).  
+Whenever a user enters the page and already has the cookie, it will be made sure that all active features are saved with a decision. If there are new features they will be added to the cookie and a new JSON string will be saved with all decisions.  
+
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.  
+Pull requests are welcome. For major changes please open an issue first to discuss what you would like to change.  
 
 ## Planned Features
-We want to enhance the A/B Testing with more solid features.  
-We are happy for any contribution for these features and looking forward to enhance this package.
+We want to enhance the A/B testing with more solid features.  
+
 * Decider-Chaining  
-Right now it's possible to only add one decision to a feature.  
+Right now it's only possible to add one decision to a feature.  
 We want to make it possible to add a chaining of deciders for example DimensionDecision AND Percentage.
 
 ## License
-The MIT License (MIT). Please see [License File](LICENSE) for more information.
+This package is released under the MIT License (MIT). Please see [License File](LICENSE) for more information.
