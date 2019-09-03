@@ -12,6 +12,9 @@
             "Wysiwyg\\ABTesting\\": "Classes/"
         }
     },
+    "archive": {
+        "exclude": ["Documentation/"]
+    },
     "extra": {
         "neos": {
             "package-key": "Wysiwyg.ABTesting"

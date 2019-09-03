@@ -15,6 +15,10 @@ composer require wysiwyg/neos-abtesting
 ```
 
 ## Usage
+![ demo image](Documentation/ab-testing-container.jpg "Example for the configuration below")  
+
+![ demo image](Documentation/ab-testing-frontend.jpg "Example for the configuration below")  
+
 This package offers a node container for displaying two different nodes for two different decisions (A or B).
 
 You can add the A/B testing container to your constraints: `Wysiwyg.ABTesting:ABTestingContainer`  
@@ -52,7 +56,10 @@ You will find a new "A/B Testing" menu item in the main menu of the Neos backend
 The module "Features" will offer all necessary functions to manage A/B testing features.
 In the A/B testing dashboard you will find the following options:
 * "Create Feature": Add a new A/B test feature
-* "Feature List": Shows a list of all A/B test features
+* "Feature List": Shows a list of all A/B test features  
+
+**Feature List**  
+![ demo image](Documentation/feature-list.jpg "Example for the configuration below")  
 
 ## Settings
 This package uses default values for creating a cookie.  
