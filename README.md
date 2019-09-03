@@ -15,7 +15,7 @@ composer require wysiwyg/neos-abtesting
 ```
 
 ## Usage
-This package offers a Node-Container for displaying two different nodes for each decision, weather it should display nodes for version A or B. 
+This package offers a Node-Container for displaying two different nodes for each decision, whether it should display nodes for version A or B. 
 
 You can add the A/B Testing Container to your constraints 
 `Wysiwyg.ABTesting:ABTestingContainer`  
