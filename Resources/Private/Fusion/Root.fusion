@@ -1,1 +1,1 @@
-include: 'NodeTypes/*.fusion'
+include: **/*

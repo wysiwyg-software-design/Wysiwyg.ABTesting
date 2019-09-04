@@ -1,60 +1,14 @@
-prototype(Wysiwyg.ABTesting:ABTestingContainer) {
-    @context.testingAorB = ${Wysiwyg.ABTesting.Decisions.getDecisionForFeature(q(node).property('abTest'), request.arguments.forceABVersion)}
-    abTestFeature = ${Wysiwyg.ABTesting.Features.getFeatureById(q(node).property('abTest'))}
+prototype(Wysiwyg.ABTesting:ABTestingContainer) < prototype(Neos.Neos:ContentComponent) {
+    feature = ${ q(node).property('abTest') }
+    forceCase = ${ request.arguments.forceABVersion }
 
-    @context.itemsA = Neos.Neos:ContentCollection {
-        tagName = 'section'
-        nodePath = 'itemsA'
-
-        content = Neos.Fusion:Array {
-            header = Neos.Fusion:Tag {
-                tagName = 'div'
-                attributes.class = 'container bg-grey'
-                content = 'A/B Testing - Case A'
-
-                @if.onlyInBackend = ${node.context.inBackend}
-            }
-
-            value = Neos.Neos:ContentCollectionRenderer
-        }
-    }
-
-    @context.itemsB = Neos.Neos:ContentCollection {
-        tagName = 'section'
-        nodePath = 'itemsB'
-
-        content = Neos.Fusion:Array {
-            header = Neos.Fusion:Tag {
-                tagName = 'div'
-                attributes.class = 'container bg-grey'
-                content = 'A/B Testing - Case B'
-
-                @if.onlyInBackend = ${node.context.inBackend}
-            }
-
-            value = Neos.Neos:ContentCollectionRenderer
-        }
-    }
-
-    items = Neos.Fusion:Case {
-        showAllInBackend {
-            condition = ${node.context.inBackend == true}
-            renderer = Neos.Fusion:Array {
-                itemsA = ${itemsA}
-
-                itemsB = ${itemsB}
-            }
-        }
-
-        caseB {
-            condition = ${testingAorB == 'b'}
-            renderer = ${itemsB}
-        }
-
-        default {
-            condition = ${true}
-            renderer = ${itemsA}
-        }
+    renderer = Wysiwyg.ABTesting:Component.TestingCaseRenderer {
+        testCase = ${ Wysiwyg.ABTesting.Decisions.getDecisionForFeature(props.feature, props.forceCase) }
+        @process.wrapDiv = afx`
+            <div class="abc">
+                { value }
+            </div>
+        `
     }
 
     @cache {

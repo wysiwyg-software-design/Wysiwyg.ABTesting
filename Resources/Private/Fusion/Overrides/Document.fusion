@@ -1,0 +1,10 @@
+prototype(Neos.Neos:Page) {
+    head.stylesheets.abTesting = Neos.Fusion:Tag {
+        tagName = 'link'
+        attributes.rel = 'stylesheet'
+        attributes.href = Neos.Fusion:ResourceUri {
+            resource = 'resource://Wysiwyg.ABTesting/Public/Stylesheet/ab-testing.css'
+        }
+        @if.onlyInBackend = ${ node.context.inBackend }
+    }
+}

@@ -1,14 +1,29 @@
-let WY = WY || {};
-
 WY.AbTesting = {
 
     abTestingCookieString: '',
+    cookieName: 'WYSIWYG_AB_TESTING',
     abTestingObject: {},
 
     init: function () {
-        this.abTestingCookieString = $.cookie("WYSIWYG_AB_TESTING");
+        this.abTestingCookieString = this.getCookie();
         this.abTestingObject = JSON.parse(this.abTestingCookieString);
     },
+
+    /**
+     * returns the testing cookie value
+     *
+     * @returns {string}
+     */
+    getCookie: function () {
+        let match = document.cookie.match(new RegExp('(^| )' + this.cookieName + '=([^;]+)'));
+
+        if (!match) {
+            return undefined;
+        }
+
+        return decodeURIComponent(match[2]);
+    },
+
 
     /**
      * This function builds an array of TrackingStrings.
@@ -71,3 +86,5 @@ WY.AbTesting = {
         }
     }
 };
+
+let WY = WY || {};
