@@ -30,7 +30,7 @@ class FeatureHelper implements ProtectedContextAwareInterface
      * @param string $methodName
      * @return boolean
      */
-    public function allowsCallOfMethod(string $methodName)
+    public function allowsCallOfMethod($methodName)
     {
         switch ($methodName) {
             case 'getFeatureById':
