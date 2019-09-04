@@ -37,10 +37,9 @@ Neos:
   Flow:
     http:
       chain:
-        process:
+        postprocess:
           chain:
             abTesting:
-              position: 'after redirect'
               component: Wysiwyg\ABTesting\Domain\Http\AbTestingCookieComponent
 
 Wysiwyg:
