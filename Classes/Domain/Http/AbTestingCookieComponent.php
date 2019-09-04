@@ -6,6 +6,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\Component\ComponentContext;
 use Neos\Flow\Http\Component\ComponentInterface;
 use Neos\Flow\Http\Cookie;
+use Neos\Flow\Http\Response;
 use Wysiwyg\ABTesting\Domain\Model\Feature;
 use Wysiwyg\ABTesting\Domain\Service\DecisionService;
 use Wysiwyg\ABTesting\Domain\Service\FeatureService;
@@ -58,7 +59,7 @@ class AbTestingCookieComponent implements ComponentInterface
      * @param ComponentContext $componentContext
      * @param $response
      */
-    private function createCookieToResponse(ComponentContext $componentContext, $response)
+    private function createCookieToResponse(ComponentContext $componentContext, Response $response)
     {
         $abTestingCookie = new Cookie($this->cookieSettings['name'], null, strtotime($this->cookieSettings['lifetime']), null, null, '/', false, false);
 
@@ -77,7 +78,7 @@ class AbTestingCookieComponent implements ComponentInterface
      * @param $request
      * @param $response
      */
-    private function refreshResponseCookie(ComponentContext $componentContext, $request, $response)
+    private function refreshResponseCookie(ComponentContext $componentContext, $request, Response $response)
     {
         $abTestingCookie = $request->getCookie($this->cookieSettings['name']);
         $currentCookieValue = json_decode($abTestingCookie->getValue(), true);

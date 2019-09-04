@@ -19,10 +19,14 @@ class FeatureHelper implements ProtectedContextAwareInterface
      * Returns a feature found by it's Id.
      *
      * @param string $featureId
-     * @return Feature
+     * @return Feature|null
      */
-    public function getFeatureById(string $featureId)
+    public function getFeatureById(string $featureId = null)
     {
+        if ($featureId === null) {
+            return null;
+        }
+
         return $this->featureRepository->findByIdentifier($featureId);
     }
 

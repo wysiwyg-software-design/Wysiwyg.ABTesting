@@ -27,13 +27,24 @@ class DecisionHelper implements ProtectedContextAwareInterface
      * Returns a calculated decision-string for given feature.
      *
      * @Flow\Session(autoStart = true)
-     * @param Feature $feature
+     * @param string $featureIdentifier
      * @param string $forceABVersion
      *
-     * @return string | boolean
+     * @return string|null
      */
-    public function getDecisionForFeature(Feature $feature, string $forceABVersion = '')
+    public function getDecisionForFeature(string $featureIdentifier = null, string $forceABVersion = null)
     {
+        if ($featureIdentifier === null) {
+            return null;
+        }
+
+        $feature = $this->featureRepository->findByIdentifier($featureIdentifier);
+
+        if ($feature === null) {
+            return null;
+        }
+
+
         if ($forceABVersion) {
             return strtolower($forceABVersion);
         }
@@ -49,7 +60,7 @@ class DecisionHelper implements ProtectedContextAwareInterface
      *
      * @return string|null
      */
-    public function getDecisionForFeatureByName(string $featureName, string $forceABVersion = '')
+    public function getDecisionForFeatureByName(string $featureName, string $forceABVersion = null)
     {
         $decision = null;
         $foundFeature = $this->featureRepository->findOneByFeatureName($featureName);
