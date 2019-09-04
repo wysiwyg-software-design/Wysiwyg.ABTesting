@@ -1,0 +1,9 @@
+prototype(Wysiwyg.ABTesting:Component.TestingCaseHeadline) < prototype(Neos.Fusion:Component) {
+    caseName = ''
+
+    renderer = afx`
+        <div class="a-b-testing-headline">A/B Testing - Case { props.caseName }</div>
+    `
+
+    @if.isInBackend = ${ node.context.inBackend }
+}
