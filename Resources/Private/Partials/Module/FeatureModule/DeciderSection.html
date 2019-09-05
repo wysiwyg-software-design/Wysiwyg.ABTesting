@@ -1,0 +1,31 @@
+<fieldset class="neos-span5">
+    <div class="neos-control-group">
+        <label class="neos-control-label" for="deciderSelect">Decider</label>
+        <div class="neos-controls">
+            <f:if condition="{decision}">
+                <f:then>
+                    <input class="neos-span12" type="text" disabled value="{decision.decider.deciderName}">
+                </f:then>
+                <f:else>
+                    <f:form.select property="deciderClassName" optionValueField="decider" optionLabelField="deciderName" id="deciderSelect" options="{deciderObjects}" class="neos-span12" />
+                </f:else>
+            </f:if>
+        </div>
+    </div>
+
+    <div class="neos-control-group{f:validation.ifHasErrors(for: 'conditionA', then: ' neos-error')}">
+        <label class="neos-control-label" for="conditionA">Condition A</label>
+        <div class="neos-controls">
+            <f:form.textfield property="decision.a" id="conditionA" class="neos-span12" autofocus="true" required="true"/>
+            <f:render partial="Module/Shared/FieldValidationResults" arguments="{fieldname: 'conditionA'}"/>
+        </div>
+    </div>
+
+    <div class="neos-control-group{f:validation.ifHasErrors(for: 'conditionB', then: ' neos-error')}">
+        <label class="neos-control-label" for="conditionA">Condition B</label>
+        <div class="neos-controls">
+            <f:form.textfield property="decision.b" id="conditionA" class="neos-span12" autofocus="true" required="true"/>
+            <f:render partial="Module/Shared/FieldValidationResults" arguments="{fieldname: 'conditionB'}"/>
+        </div>
+    </div>
+</fieldset>

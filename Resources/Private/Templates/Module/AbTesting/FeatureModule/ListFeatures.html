@@ -1,0 +1,63 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+
+<f:layout name="BackendSubModule" />
+
+<f:section name="content">
+    <legend>A/B Test Features</legend>
+    <div class="neos-row-fluid">
+        <table class="neos-table">
+            <thead>
+            <tr>
+                <th>A/B Test feature name</th>
+                <th>Status</th>
+                <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <f:for each="{allFeatures}" key="index" as="feature">
+                <tr>
+                    <td><i class="icon-cog"></i> {feature.featureName}  </td>
+                    <td>
+                        <f:if condition="{feature.active}">
+                            <f:then>
+                                <span class="neos-badge neos-badge-success">Active</span>
+                            </f:then>
+                            <f:else>
+                                <span class="neos-badge neos-badge-warning">Inactive</span>
+                            </f:else>
+                        </f:if>
+                    </td>
+                    <td class="neos-action">
+                        <div class="neos-pull-right">
+                            <f:link.action action="toggleActive" arguments="{feature: feature}" class="neos-button neos-button-primary" title="Toggle Active" additionalAttributes="{data-neos-toggle: 'tooltip'}">
+                                <f:if condition="{feature.active}">
+                                    <f:then>
+                                        <i class="fas fa-pause icon-white"></i>
+                                    </f:then>
+                                    <f:else>
+                                        <i class="fas fa-play icon-white"></i>
+                                    </f:else>
+                                </f:if>
+                            </f:link.action>
+
+                            <f:link.action action="showFeature" arguments="{feature: feature}" class="neos-button neos-button-primary" title="Show Feature" additionalAttributes="{data-neos-toggle: 'tooltip'}">
+                                <i class="fas fa-info-circle icon-white"></i>
+                            </f:link.action>
+
+                            <f:link.action action="editFeature" arguments="{feature: feature}" class="neos-button neos-button-primary" title="Edit Feature" additionalAttributes="{data-neos-toggle: 'tooltip'}">
+                                <i class="fas fa-pencil-alt icon-white"></i>
+                            </f:link.action>
+
+                            <f:link.action action="deleteFeature" arguments="{feature: feature}" class="neos-button neos-button-danger" title="Delete Feature" additionalAttributes="{data-neos-toggle: 'tooltip'}">
+                                <i class="fas fa-trash icon-white"></i>
+                            </f:link.action>
+
+                        </div>
+                    </td>
+                </tr>
+            </f:for>
+        </table>
+    </div>
+    <div class="neos-footer">
+        <f:link.action action="newFeature" class="neos-button neos-button-primary" title="New Feature">Create A/B Test Feature</f:link.action>
+    </div>
+</f:section>

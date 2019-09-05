@@ -1,0 +1,24 @@
+-
+  requestFilter: 'parentRequest.isPackage("Neos.Neos") && isPackage("Wysiwyg.ABTesting")'
+  options:
+    layoutRootPaths:
+      'Wysiwyg.ABTesting': 'resource://Wysiwyg.ABTesting/Private/Layouts'
+      'Neos.Media': 'resource://Neos.Media/Private/Layouts'
+      'Neos.Neos': 'resource://Neos.Neos/Private/Layouts'
+    partialRootPaths:
+      'Wysiwyg.ABTesting': 'resource://Wysiwyg.ABTesting/Private/Partials'
+      'Neos.Media': 'resource://Neos.Media/Private/Partials'
+      'Neos.Neos': 'resource://Neos.Neos/Private/Partials'
+
+-
+  requestFilter: 'parentRequest.isPackage("Neos.Neos") && isPackage("Wysiwyg.ABTesting") && (isController("Module\AbTesting\FeatureModule"))'
+  options:
+    layoutRootPaths:
+      'Wysiwyg.ABTesting': 'resource://Wysiwyg.ABTesting/Private/Layouts'
+      'Neos.Media': 'resource://Neos.Media/Private/Layouts'
+      'Neos.Neos': 'resource://Neos.Neos/Private/Layouts'
+    partialRootPaths:
+      'Wysiwyg.ABTesting': 'resource://Wysiwyg.ABTesting/Private/Partials'
+      'Neos.Media': 'resource://Neos.Media/Private/Partials'
+      'Neos.Neos': 'resource://Neos.Neos/Private/Partials'
+

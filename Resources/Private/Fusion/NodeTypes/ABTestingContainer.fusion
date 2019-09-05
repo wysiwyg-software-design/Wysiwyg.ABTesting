@@ -1,0 +1,21 @@
+prototype(Wysiwyg.ABTesting:ABTestingContainer) < prototype(Neos.Neos:ContentComponent) {
+    feature = ${ q(node).property('abTest') }
+    forceCase = ${ request.arguments.forceABVersion }
+
+    renderer = Wysiwyg.ABTesting:Component.TestingCaseRenderer {
+        testCase = ${ Wysiwyg.ABTesting.Decisions.getDecisionForFeature(props.feature, props.forceCase) }
+        @process.wrapDiv = afx`
+            <div class="abc">
+                { value }
+            </div>
+        `
+    }
+
+    @cache {
+        mode = 'uncached'
+        context {
+            1 = 'node'
+            2 = 'documentNode'
+        }
+    }
+}
