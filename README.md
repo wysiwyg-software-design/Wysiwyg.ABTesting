@@ -63,8 +63,9 @@ In the A/B testing dashboard you will find the following options:
 
 ## Settings
 This package uses default values for creating a cookie.  
-There are several settings which can be modified for your own implementation.  
-```
+There are several settings which can be modified for your own implementation. 
+
+```yaml
 Wysiwyg:  
   ABTesting:  
     cookie:  
