@@ -6,6 +6,7 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\Component\ComponentContext;
 use Neos\Flow\Http\Component\ComponentInterface;
 use Neos\Flow\Http\Cookie;
+use Neos\Flow\Http\Request;
 use Neos\Flow\Http\Response;
 use Wysiwyg\ABTesting\Domain\Model\Feature;
 use Wysiwyg\ABTesting\Domain\Service\DecisionService;
@@ -57,7 +58,7 @@ class AbTestingCookieComponent implements ComponentInterface
      * Creates a new A/B Testing Cookie with decisions of all features.
      *
      * @param ComponentContext $componentContext
-     * @param $response
+     * @param Response $response
      */
     private function createCookieToResponse(ComponentContext $componentContext, Response $response)
     {
@@ -75,10 +76,10 @@ class AbTestingCookieComponent implements ComponentInterface
      * Checks for current decisions and add new decisions for features without a decision to the cookie.
      *
      * @param ComponentContext $componentContext
-     * @param $request
-     * @param $response
+     * @param Request $request
+     * @param Response $response
      */
-    private function refreshResponseCookie(ComponentContext $componentContext, $request, Response $response)
+    private function refreshResponseCookie(ComponentContext $componentContext, Request $request, Response $response)
     {
         $abTestingCookie = $request->getCookie($this->cookieSettings['name']);
         $currentCookieValue = json_decode($abTestingCookie->getValue(), true);
