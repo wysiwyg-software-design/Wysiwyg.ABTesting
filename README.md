@@ -9,7 +9,7 @@ This package provides a simple to use backend module and frontend container to r
 ## Installation
 Run these commands to install the package and update the database schema.
 ```bash
-composer require wysiwyg/neos-abtesting
+composer require wy/neos-abtesting
 
 ./flow flow:doctrine:migrate
 ```
