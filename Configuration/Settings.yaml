@@ -26,6 +26,7 @@ Neos:
             label: 'Features'
             description: 'Configurations of A/B Testing Features'
             controller: Wysiwyg\ABTesting\Controller\Module\AbTesting\FeatureModuleController
+            privilegeTarget: Wysiwyg.ABTesting:Module.AbTesting.Feature
             widgetTemplatePathAndFileName: 'resource://Neos.Neos/Private/Templates/Module/Widget.html'
             actions:
               newFeature:
