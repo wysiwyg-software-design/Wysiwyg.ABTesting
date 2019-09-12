@@ -15,9 +15,9 @@ composer require wy/neos-abtesting
 ```
 
 ## Usage
-![ demo image](Documentation/ab-testing-container.jpg "Example for the configuration below")  
+![ demo image](Documentation/ab-testing-container.jpg "Adding a A/B container in backend")  
 
-![ demo image](Documentation/ab-testing-frontend.jpg "Example for the configuration below")  
+![ demo image](Documentation/ab-testing-frontend.jpg "Frontend displays one version")  
 
 This package offers a node container for displaying two different nodes for two different decisions (A or B).
 
@@ -59,7 +59,7 @@ In the A/B testing dashboard you will find the following options:
 * "Feature List": Shows a list of all A/B test features  
 
 **Feature List**  
-![ demo image](Documentation/feature-list.jpg "Example for the configuration below")  
+![ demo image](Documentation/feature-list.jpg "Neos Module which shows all features and options to change")  
 
 ## Settings
 This package uses default values for creating a cookie.  
@@ -91,6 +91,12 @@ We want to enhance the A/B testing with more solid features.
 * Decider-Chaining  
 Right now it's only possible to add one decision to a feature.  
 We want to make it possible to add a chaining of deciders for example DimensionDecision AND Percentage.
+
+## Authors
+[Sven Wütherich](https://github.com/svwu)  
+[Alexander Schulte](https://github.com/Alex-Schulte)  
+[Eva-Maria Müller](https://github.com/emmue)  
+[Marvin Kuhn](https://github.com/breadlesscode)
 
 ## License
 This package is released under the MIT License (MIT). Please see [License File](LICENSE) for more information.
