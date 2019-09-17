@@ -1,9 +1,13 @@
 prototype(Wysiwyg.ABTesting:ABTestingContainer) < prototype(Neos.Neos:ContentComponent) {
     feature = ${ q(node).property('abTest') }
     forceCase = ${ request.arguments.forceABVersion }
+    testCase = ${ Wysiwyg.ABTesting.Decisions.getDecisionForFeature(this.feature, this.forceCase) }
+
+    @context.testCase = ${ this.testCase }
+    @context.feature = ${ this.feature }
 
     renderer = Wysiwyg.ABTesting:Component.TestingCaseRenderer {
-        testCase = ${ Wysiwyg.ABTesting.Decisions.getDecisionForFeature(props.feature, props.forceCase) }
+        testCase = ${ props.testCase }
         @process.wrapDiv = afx`
             <div class="abc">
                 { value }
@@ -12,10 +16,26 @@ prototype(Wysiwyg.ABTesting:ABTestingContainer) < prototype(Neos.Neos:ContentCom
     }
 
     @cache {
-        mode = 'uncached'
+        mode = 'dynamic'
+        entryIdentifier {
+            0 = ${node}
+            1 = ${feature}
+            2 = ${testCase}
+        }
+
+        entryDiscriminator = Neos.Fusion:Collection {
+            0 = ${feature}
+            1 = ${testCase}
+        }
+
+        entryTags {
+            1 = ${Neos.Caching.nodeTag(node)}
+        }
+
         context {
             1 = 'node'
-            2 = 'documentNode'
+            2 = 'testCase'
+            3 = 'feature'
         }
     }
 }
