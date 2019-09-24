@@ -18,15 +18,10 @@ prototype(Wysiwyg.ABTesting:ABTestingContainer) < prototype(Neos.Neos:ContentCom
     @cache {
         mode = 'dynamic'
         entryIdentifier {
-            0 = ${node}
-            1 = ${feature}
-            2 = ${testCase}
+            node = ${node}
         }
 
-        entryDiscriminator = Neos.Fusion:Collection {
-            0 = ${feature}
-            1 = ${testCase}
-        }
+        entryDiscriminator = ${Wysiwyg.ABTesting.Decisions.getDecisionForFeature(feature, request.arguments.forceABVersion)}
 
         entryTags {
             1 = ${Neos.Caching.nodeTag(node)}
@@ -34,8 +29,9 @@ prototype(Wysiwyg.ABTesting:ABTestingContainer) < prototype(Neos.Neos:ContentCom
 
         context {
             1 = 'node'
-            2 = 'testCase'
-            3 = 'feature'
+            2 = 'documentNode'
+            3 = 'site'
+            4 = 'feature'
         }
     }
 }
