@@ -47,7 +47,7 @@ class AbTestingCookieComponent implements ComponentInterface
         $response = $componentContext->getHttpResponse();
 
         $cookieParams = $request->getCookieParams();
-        if ($cookieParams && !array_key_exists($this->cookieSettings['name'], $cookieParams)) {
+        if (array_key_exists($this->cookieSettings['name'], $cookieParams) === false) {
             $this->createCookieToResponse($componentContext, $response);
             return;
         }
