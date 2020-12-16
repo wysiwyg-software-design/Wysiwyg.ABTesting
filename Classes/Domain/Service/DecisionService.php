@@ -40,6 +40,12 @@ class DecisionService
     protected $abTestingSession;
 
     /**
+     * @Flow\InjectConfiguration(path="cookie.name")
+     * @var string
+     */
+    protected $cookieName;
+
+    /**
      * Returns a decision for AB Testing from a Feature.
      * Returned value will always be a string, for example:
      * 'a' or 'b'.
@@ -149,10 +155,10 @@ class DecisionService
      */
     public function getDecisionFromCookies($featureName)
     {
-        if(!array_key_exists('WYSIWYG_AB_TESTING', $_COOKIE)){
+        if(!array_key_exists($this->cookieName, $_COOKIE)){
             return null;
         }
-        $decisionsArray = json_decode($_COOKIE['WYSIWYG_AB_TESTING'], true);
+        $decisionsArray = json_decode($_COOKIE[$this->cookieName], true);
 
         return array_key_exists($featureName, $decisionsArray) ? $decisionsArray[$featureName] : null;
     }
