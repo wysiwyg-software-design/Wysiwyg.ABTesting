@@ -1,8 +1,4 @@
 <?php
-/**
- * User: sven <wuetherich@wysiwyg.de>
- * Date: 02.07.2018
- */
 
 namespace Wysiwyg\ABTesting\Domain\Repository;
 

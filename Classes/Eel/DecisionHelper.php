@@ -8,10 +8,6 @@ use Wysiwyg\ABTesting\Domain\Model\Feature;
 use Wysiwyg\ABTesting\Domain\Repository\FeatureRepository;
 use Wysiwyg\ABTesting\Domain\Service\DecisionService;
 
-/**
- * User: sven <wuetherich@wysiwyg.de>
- * Date: 02.07.2018
- */
 class DecisionHelper implements ProtectedContextAwareInterface
 {
 
