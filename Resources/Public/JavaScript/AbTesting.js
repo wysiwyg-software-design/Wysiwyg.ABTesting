@@ -1,12 +1,12 @@
 WY.AbTesting = {
 
     abTestingCookieString: '',
-    cookieName: 'WYSIWYG_AB_TESTING',
+    cookieName: document.body.dataset.abTestingCookieName || 'WYSIWYG_AB_TESTING',
     abTestingObject: {},
 
     init: function () {
         this.abTestingCookieString = this.getCookie();
-        this.abTestingObject = JSON.parse(this.abTestingCookieString);
+        this.abTestingObject = JSON.parse(this.abTestingCookieString || '{}');
     },
 
     /**

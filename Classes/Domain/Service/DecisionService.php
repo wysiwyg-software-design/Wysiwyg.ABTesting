@@ -17,6 +17,12 @@ use Wysiwyg\ABTesting\Domain\Repository\FeatureRepository;
 class DecisionService
 {
     /**
+     * @Flow\InjectConfiguration(path="cookie")
+     * @var array
+     */
+    protected $cookieSettings;
+
+    /**
      * @Flow\Inject
      * @var FeatureRepository
      */
@@ -132,8 +138,10 @@ class DecisionService
      */
     public function getDecisionFromCookies(string $featureName): string
     {
-        if (array_key_exists('WYSIWYG_AB_TESTING', $_COOKIE)) {
-            $decisionsArray = json_decode($_COOKIE['WYSIWYG_AB_TESTING'], true);
+        $cookieName = $this->cookieSettings['name'] ?? 'WYSIWYG_AB_TESTING';
+
+        if (array_key_exists($cookieName, $_COOKIE)) {
+            $decisionsArray = json_decode($_COOKIE[$cookieName], true);
 
             return array_key_exists($featureName, $decisionsArray) ? $decisionsArray[$featureName] : '';
         }

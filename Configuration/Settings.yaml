@@ -45,6 +45,9 @@ Neos:
 
 Wysiwyg:
   AbTesting:
+    cookie:
+      name: 'WYSIWYG_AB_TESTING'
+      lifetime: '+2 years' # will be used for strtotime
     deciders:
       PercentageDecider:
         enabled: true

@@ -14,6 +14,11 @@ use Wysiwyg\CookieHandling\Domain\Service\CookieConsentService;
 
 class AbTestingCookieComponent implements ComponentInterface
 {
+    /**
+     * @Flow\InjectConfiguration(path="cookie")
+     * @var array
+     */
+    protected $cookieSettings;
 
     /**
      * @Flow\Inject
@@ -34,7 +39,12 @@ class AbTestingCookieComponent implements ComponentInterface
     protected $cookieConsentService;
 
     /**
+     * Sets an A/B Testing Cookie.
+     * When no cookie is set, a new one with new decisions will be added.
+     * When a cookie exists, the cookie value will be updated if features couldn't be found in the cookie.
+     *
      * @param ComponentContext $componentContext
+     *
      * @return void
      * @api
      */
@@ -43,9 +53,9 @@ class AbTestingCookieComponent implements ComponentInterface
         $request = $componentContext->getHttpRequest();
         $response = $componentContext->getHttpResponse();
 
-        $cookieName = 'WYSIWYG_AB_TESTING';
+        $cookieName = $this->cookieSettings['name'] ?? 'WYSIWYG_AB_TESTING';
 
-        $abTestingCookie = new Cookie($cookieName, null, strtotime('+2 years'), null, null, '/', false, false);
+        $abTestingCookie = new Cookie($cookieName, null, strtotime($this->cookieSettings['lifetime']), null, null, '/', false, false);
 
         if ($request->hasCookie($cookieName)) {
             $currentCookie = $request->getCookie($cookieName);
