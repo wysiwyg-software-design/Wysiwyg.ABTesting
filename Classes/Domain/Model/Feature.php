@@ -1,4 +1,8 @@
 <?php
+/**
+ * User: sven <wuetherich@wysiwyg.de>
+ * Date: 02.07.2018
+ */
 
 namespace Wysiwyg\ABTesting\Domain\Model;
 
@@ -12,6 +16,7 @@ use Wysiwyg\ABTesting\Domain\Decider\DeciderInterface;
  */
 class Feature
 {
+
     /**
      * @var string
      */
@@ -27,12 +32,6 @@ class Feature
      * @var ArrayCollection<Wysiwyg\ABTesting\Domain\Model\Decision>
      */
     protected $decisions;
-
-    /**
-     * @ORM\Column(nullable=true)
-     * @var string
-     */
-    protected $defaultDecision = null;
 
     /**
      * @return string
@@ -82,19 +81,6 @@ class Feature
         $this->decisions = $decisions;
     }
 
-    /**
-     * @return string
-     */
-    public function getDefaultDecision()
-    {
-        return $this->defaultDecision;
-    }
 
-    /**
-     * @param string $defaultDecision
-     */
-    public function setDefaultDecision($defaultDecision)
-    {
-        $this->defaultDecision = $defaultDecision;
-    }
+
 }

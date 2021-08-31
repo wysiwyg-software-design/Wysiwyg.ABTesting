@@ -1,20 +1,25 @@
 <?php
+/**
+ * User: sven <wuetherich@wysiwyg.de>
+ * Date: 02.07.2018
+ */
 
 namespace Wysiwyg\ABTesting\Domain\Model;
 
+use Wysiwyg\ABTesting\Domain\Decider\DeciderInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Neos\Flow\Annotations as Flow;
-use Wysiwyg\ABTesting\Domain\Decider\DeciderInterface;
 
 /**
  * @Flow\Entity
  */
 class Decision
 {
+
     /**
-     * @var string
+     * @var DeciderInterface
      */
-    protected $deciderClassName;
+    protected $decider;
 
     /**
      * @var Feature
@@ -29,19 +34,61 @@ class Decision
     protected $decision = [];
 
     /**
-     * @return string
+     * @var string
      */
-    public function getDeciderClassName()
+    protected $defaultDecision;
+
+    /**
+     * @var integer
+     */
+    protected $priority;
+
+    /**
+     * @return DeciderInterface
+     */
+    public function getDecider()
     {
-        return $this->deciderClassName;
+        return new $this->decider;
     }
 
     /**
-     * @param string $deciderClassName
+     * @param DeciderInterface $decider
      */
-    public function setDeciderClassName(string $deciderClassName)
+    public function setDecider($decider)
     {
-        $this->deciderClassName = $deciderClassName;
+        $this->decider = $decider;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultDecision()
+    {
+        return $this->defaultDecision;
+    }
+
+    /**
+     * @param string $defaultDecision
+     */
+    public function setDefaultDecision($defaultDecision)
+    {
+        $this->defaultDecision = $defaultDecision;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param int $priority
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
     }
 
     /**
@@ -74,13 +121,5 @@ class Decision
     public function setDecision($decision)
     {
         $this->decision = $decision;
-    }
-
-    /**
-     * @return DeciderInterface
-     */
-    public function getDecider()
-    {
-        return new $this->deciderClassName;
     }
 }

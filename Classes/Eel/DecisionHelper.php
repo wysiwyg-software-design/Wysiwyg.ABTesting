@@ -4,13 +4,17 @@ namespace Wysiwyg\ABTesting\Eel;
 
 use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Mvc\ActionRequest;
 use Wysiwyg\ABTesting\Domain\Model\Feature;
 use Wysiwyg\ABTesting\Domain\Repository\FeatureRepository;
 use Wysiwyg\ABTesting\Domain\Service\DecisionService;
 
+/**
+ * User: sven <wuetherich@wysiwyg.de>
+ * Date: 02.07.2018
+ */
 class DecisionHelper implements ProtectedContextAwareInterface
 {
+
     /**
      * @Flow\Inject
      * @var DecisionService
@@ -24,56 +28,56 @@ class DecisionHelper implements ProtectedContextAwareInterface
     protected $featureRepository;
 
     /**
-     * Returns a calculated decision-string for given feature.
+     * Returns a calculated decision-string for given Test by Name
      *
-     * @Flow\Session(autoStart = true)
-     * @param string $featureIdentifier
-     * @param string $forceABVersion
-     *
-     * @return string|null
+     * @param Feature $feature
+     * @param string $forcedDecision
+     * @return string
      */
-    public function getDecisionForFeature(string $featureIdentifier = null, string $forceABVersion = null)
+    public function getDecisionForFeature(Feature $feature, $forcedDecision = null)
     {
-        if ($featureIdentifier === null) {
-            return null;
-        }
-
-        $feature = $this->featureRepository->findByIdentifier($featureIdentifier);
-
-        if ($feature === null) {
-            return null;
-        }
-
-
-        if ($forceABVersion) {
-            return strtolower($forceABVersion);
+        if ($forcedDecision) {
+            return $forcedDecision;
         }
 
         return $this->decisionService->getDecisionForFeature($feature);
     }
 
     /**
-     * Returns a decision for a feature by featureName.
+     * Returns a decision for a Feature by featureName.
      *
      * @param string $featureName
-     * @param string $forceABVersion
-     *
-     * @return string|null
+     * @param string $forcedDecision
+     * @return string
      */
-    public function getDecisionForFeatureByName(string $featureName, string $forceABVersion = null)
+    public function getDecisionForFeatureByName(string $featureName, $forcedDecision = null)
     {
-        $decision = null;
-        $foundFeature = $this->featureRepository->findOneByFeatureName($featureName);
-
-        if ($foundFeature instanceof Feature) {
-            $decision = $this->getDecisionForFeature($foundFeature, $forceABVersion);
+        if ($forcedDecision) {
+            return $forcedDecision;
         }
 
-        return $decision;
+        $foundFeature = $this->featureRepository->findOneByFeatureName($featureName);
+        return ($foundFeature instanceof Feature) ? $this->getDecisionForFeature($foundFeature, $forcedDecision) : '';
+    }
+    /**
+     * Returns a decision for a Feature by featureName.
+     *
+     * @param string $featurePersistentIdentifier
+     * @param string $forcedDecision
+     * @return string
+     */
+    public function getDecisionForFeatureByIdentifier(string $featurePersistentIdentifier, $forcedDecision = null)
+    {
+        if ($forcedDecision) {
+            return $forcedDecision;
+        }
+
+        $foundFeature = $this->featureRepository->findByIdentifier($featurePersistentIdentifier);
+        return ($foundFeature instanceof Feature) ? $this->getDecisionForFeature($foundFeature, $forcedDecision) : '';
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getAllDecisions()
     {
@@ -82,16 +86,13 @@ class DecisionHelper implements ProtectedContextAwareInterface
 
     /**
      * @param string $methodName
-     *
      * @return boolean
      */
     public function allowsCallOfMethod($methodName)
     {
         switch ($methodName) {
             case 'getDecisionForFeature':
-                return true;
             case 'getAllDecisions':
-                return true;
             case 'getDecisionForFeatureByName':
                 return true;
         }

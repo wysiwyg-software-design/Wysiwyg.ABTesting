@@ -10,3 +10,5 @@
       type: 'Neos.Neos:ContentCollection'
     itemsB:
       type: 'Neos.Neos:ContentCollection'
+    itemsC:
+      type: 'Neos.Neos:ContentCollection'

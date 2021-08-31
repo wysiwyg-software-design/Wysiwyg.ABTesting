@@ -1,17 +1,23 @@
 <?php
+/**
+ * User: sven <wuetherich@wysiwyg.de>
+ * Date: 02.07.2018
+ */
 
 namespace Wysiwyg\ABTesting\Domain\Service;
 
 use Neos\ContentRepository\Domain\Model\Node;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Eel\FlowQuery\FlowQuery;
-use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Service\LinkingService;
+use Wysiwyg\ABTesting\Domain\Model\Feature;
 use Wysiwyg\ABTesting\Domain\Repository\FeatureRepository;
+use Neos\Flow\Annotations as Flow;
 
 class FeatureService
 {
+
     /**
      * @Flow\Inject
      * @var ContextFactoryInterface
@@ -37,19 +43,11 @@ class FeatureService
     protected $featureRepository;
 
     /**
-     * Finds all document nodes which includes the given features.
-     * Currently it only get's the parent of the parent of the container which is always the documentNode.
-     *
-     * NodeTree must apply the following structure:
-     *  DocumentNode (parent)
-     *      ContentCollection (parent)
-     *          ABTestingContainer
-     *
-     * @param $feature
+     * @param Feature $feature
      * @return array
      * @throws \Neos\Eel\Exception
      */
-    public function getPagesWithFeature($feature)
+    public function getPagesWithFeature(Feature $feature): array
     {
         $flowQuery = new FlowQuery([$this->contextFactory->create()]);
         $currentSiteNode = $flowQuery->get(0)->getCurrentSiteNode();
@@ -60,6 +58,7 @@ class FeatureService
         $foundContainer = $q->find('[instanceof Wysiwyg.ABTesting:ABTestingContainer][abTest][abTest="' . $featureId . '"]')->get();
 
         $pageNodes = [];
+
         /**
          * @var Node $container
          */
@@ -69,16 +68,16 @@ class FeatureService
         }
 
         return $pageNodes;
+
     }
 
     /**
-     * Wrapper method to get allActiveFeatures.
-     *
      * @return array
      */
     public function getAllActiveFeatures()
     {
         return $this->featureRepository->getAllActiveFeatures();
+
     }
 
 }

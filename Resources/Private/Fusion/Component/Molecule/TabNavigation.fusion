@@ -1,0 +1,13 @@
+prototype(Wysiwyg.AbTesting:Component.Molecule.TabNavigation) < prototype(Neos.Fusion:Component) {
+    /**
+        PROPS:
+           - tabs
+     */
+    tabs = ''
+
+    renderer = afx`
+        <ul class="nav nav-tabs">
+            {props.tabs}
+        </ul>
+    `
+}

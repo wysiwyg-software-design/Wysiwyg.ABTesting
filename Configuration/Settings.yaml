@@ -19,14 +19,13 @@ Neos:
         label: 'A/B Testing'
         description: 'A/B Testing Dashboard'
         controller: Wysiwyg\ABTesting\Controller\Module\AbTestingController
-        icon: icon-briefcase
+        icon: 'fas fa-briefcase'
         submodules:
           features:
-            icon: icon-cog
-            label: 'Features'
-            description: 'Configurations of A/B Testing Features'
+            icon: 'fas fa-cog'
+            label: 'A/B Tests'
+            description: 'Configuration of A/B Tests'
             controller: Wysiwyg\ABTesting\Controller\Module\AbTesting\FeatureModuleController
-            privilegeTarget: Wysiwyg.ABTesting:Module.AbTesting.Feature
             widgetTemplatePathAndFileName: 'resource://Neos.Neos/Private/Templates/Module/Widget.html'
             actions:
               newFeature:
@@ -38,13 +37,19 @@ Neos:
   Flow:
     http:
       chain:
-        postprocess:
+        process:
           chain:
             abTesting:
+              position: 'after redirect'
               component: Wysiwyg\ABTesting\Domain\Http\AbTestingCookieComponent
 
 Wysiwyg:
-  ABTesting:
-    cookie:
-      name: 'WYSIWYG_AB_TESTING'
-      lifetime: '+2 years' # will be used for strtotime
+  AbTesting:
+    deciders:
+      PercentageDecider:
+        enabled: true
+      PercentageAbcDecider:
+        enabled: true
+    # configure the comparator you want to use
+    # the \Wysiwyg\ABTesting\Domain\Comparator\FixedValueComparator is just for testing, it won't work here
+    comparatorClassName: Wysiwyg\ABTesting\Domain\Comparator\UserIdentifierComparator

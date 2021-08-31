@@ -6,8 +6,9 @@
         <f:then>
             <f:form action="deleteFeatureConfirmed" object="{feature}" objectName="feature">
                 <div class="neos-row-fluid">
-                    <p>Are you sure, you want to delete the Feature?</p>
+                    <p>Are you sure, you want to delete the A/B Test?</p>
                 </div>
+
                 <div class="neos-footer">
                     <f:link.action action="listFeatures" class="neos-button">Cancel</f:link.action>
                     <f:form.submit value="Delete Feature" class="neos-button neos-button-primary"/>
@@ -17,14 +18,14 @@
         <f:else>
             <div class="neos-row-fluid">
                 <h3>
-                    Feature can't be deleted.
+                    A/B Test can't be deleted.
                 </h3>
                 <p>
-                    Please remove the A/B Testing Feature on all pages to delete this feature.
+                    Please remove the A/B Testing Feature on all pages in order to delete this A/B Test.
                 </p>
             </div>
             <div class="neos-row-fluid">
-                <f:render partial="Module/FeatureModule/PageList" arguments="{_all}" />
+                <f:render partial="PageList" arguments="{_all}" />
             </div>
             <div class="neos-footer">
                 <f:link.action action="listFeatures" class="neos-button">Back to List</f:link.action>

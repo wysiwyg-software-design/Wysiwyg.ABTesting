@@ -1,0 +1,16 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+{namespace wysiwyg=Wysiwyg\ABTesting\ViewHelpers}
+
+<f:layout name="BackendSubModule" />
+
+<f:section name="subtitle">
+</f:section>
+
+<f:section name="content">
+    <div class="neos-row-fluid">
+        <f:render partial="PageList" arguments="{_all}" />
+    </div>
+    <div class="neos-footer">
+        <f:link.action action="listFeatures" class="neos-button">Back</f:link.action>
+    </div>
+</f:section>

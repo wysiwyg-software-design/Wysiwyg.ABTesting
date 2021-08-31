@@ -1,37 +1,85 @@
-prototype(Wysiwyg.ABTesting:ABTestingContainer) < prototype(Neos.Neos:ContentComponent) {
-    feature = ${ q(node).property('abTest') }
-    forceCase = ${ request.arguments.forceABVersion }
-    testCase = ${ Wysiwyg.ABTesting.Decisions.getDecisionForFeature(this.feature, this.forceCase) }
+prototype(Wysiwyg.ABTesting:ABTestingContainer) {
+    @context.testingAorB = ${Wysiwyg.ABTesting.Decisions.getDecisionForFeatureByIdentifier(q(node).property('abTest'), request.arguments.forceABVersion)}
+    abTestFeature = ${Wysiwyg.ABTesting.Features.getFeatureById(q(node).property('abTest'))}
 
-    @context.testCase = ${ this.testCase }
-    @context.feature = ${ this.feature }
-
-    renderer = Wysiwyg.ABTesting:Component.TestingCaseRenderer {
-        testCase = ${ props.testCase }
-        @process.wrapDiv = afx`
-            <div class="abc">
-                { value }
-            </div>
-        `
+    items = Neos.Fusion:Case {
+        backendView {
+            condition = ${node.context.inBackend == true}
+            renderer = Wysiwyg.ABTesting:ABTestingContainer.BackendView {
+                nodeIdentifier = ${node.identifier}
+            }
+        }
+        caseB {
+            condition = ${testingAorB == 'b'}
+            renderer = Neos.Neos:ContentCollection {
+                nodePath = 'itemsB'
+            }
+        }
+        caseC {
+            condition = ${testingAorB == 'c'}
+            renderer = Neos.Neos:ContentCollection {
+                nodePath = 'itemsC'
+            }
+        }
+        default {
+            condition = ${true}
+            renderer = Neos.Neos:ContentCollection {
+                nodePath = 'itemsA'
+            }
+        }
     }
 
     @cache {
-        mode = 'dynamic'
-        entryIdentifier {
-            node = ${node}
-        }
-
-        entryDiscriminator = ${Wysiwyg.ABTesting.Decisions.getDecisionForFeature(feature, request.arguments.forceABVersion)}
-
-        entryTags {
-            1 = ${Neos.Caching.nodeTag(node)}
-        }
-
+        mode = 'uncached'
         context {
             1 = 'node'
             2 = 'documentNode'
-            3 = 'site'
-            4 = 'feature'
+        }
+    }
+}
+
+prototype(Wysiwyg.ABTesting:ABTestingContainer.BackendView) < prototype(Neos.Fusion:Component) {
+
+    nodeIdentifier = ''
+
+    renderer = Wysiwyg.AbTesting:Component.Organism.Tabs {
+        tabNavigation = Wysiwyg.AbTesting:Component.Molecule.TabNavigation {
+            tabs = Neos.Fusion:Array {
+                tabA = Wysiwyg.AbTesting:Component.Molecule.Tab {
+                    target = ${'#ab-container-a-' + props.nodeIdentifier}
+                    text = 'A'
+                    active = true
+                }
+                tabB = Wysiwyg.AbTesting:Component.Molecule.Tab {
+                    target = ${'#ab-container-b-' + props.nodeIdentifier}
+                    text = 'B'
+                }
+                tabC = Wysiwyg.AbTesting:Component.Molecule.Tab {
+                    target = ${'#ab-container-c-' + props.nodeIdentifier}
+                    text = 'C'
+                }
+            }
+        }
+        tabContent = Neos.Fusion:Array {
+            tabPaneA = Wysiwyg.AbTesting:Component.Molecule.TabPane {
+                content = Neos.Neos:ContentCollection {
+                    nodePath = 'itemsA'
+                }
+                id = ${'ab-container-a-' + props.nodeIdentifier}
+                active = true
+            }
+            tabPaneB = Wysiwyg.AbTesting:Component.Molecule.TabPane {
+                content = Neos.Neos:ContentCollection {
+                    nodePath = 'itemsB'
+                }
+                id = ${'ab-container-b-' + props.nodeIdentifier}
+            }
+            tabPaneC = Wysiwyg.AbTesting:Component.Molecule.TabPane {
+                content = Neos.Neos:ContentCollection {
+                    nodePath = 'itemsC'
+                }
+                id = ${'ab-container-c-' + props.nodeIdentifier}
+            }
         }
     }
 }

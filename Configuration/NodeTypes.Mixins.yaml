@@ -21,4 +21,4 @@
           position: 10
           group: abTesting
           editorOptions:
-            dataSourceIdentifier: 'wysiwyg-abtesting-features'
+            dataSourceIdentifier: 'wysiwyg-abtesting-tests'

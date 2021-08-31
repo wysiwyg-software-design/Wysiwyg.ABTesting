@@ -1,0 +1,9 @@
+<fieldset class="neos-span5">
+    <f:render partial="DeciderInputSections/{decider.title}" arguments="{_all}"/>
+    <div class="neos-controls">
+        <label for="deciderSelect">
+            Default Decision
+        </label>
+        <f:form.select property="defaultDecision" id="deciderSelect" options="{decider.possibleDecisions}" class="neos-span12" />
+    </div>
+</fieldset>

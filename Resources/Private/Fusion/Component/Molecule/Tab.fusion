@@ -1,0 +1,16 @@
+prototype(Wysiwyg.AbTesting:Component.Molecule.Tab) < prototype(Neos.Fusion:Component) {
+    /**
+        PROPS:
+           - text
+           - target
+     */
+    target = ''
+    text = ''
+    active = false
+
+    renderer = afx`
+        <li class={props.active ? 'active' : ''}>
+            <a href={props.target} data-toggle="tab">{props.text}</a>
+        </li>
+    `
+}

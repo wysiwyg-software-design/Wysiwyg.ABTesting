@@ -1,0 +1,17 @@
+prototype(Wysiwyg.AbTesting:Component.Molecule.TabPane) < prototype(Neos.Fusion:Component) {
+    /**
+        PROPS:
+           - version
+           - content
+           - active
+     */
+    id = ''
+    content = ''
+    active = false
+
+    renderer = afx`
+        <div class={props.active ? "tab-pane fade in active" : "tab-pane fade"} id={props.id}>
+            {props.content}
+        </div>
+    `
+}

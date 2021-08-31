@@ -1,0 +1,39 @@
+{namespace neos=Neos\Neos\ViewHelpers}
+<f:layout name="BackendSubModule"/>
+
+<f:section name="subtitle">
+    <legend>Add Decider to A/B Test <b>{feature.featureName}</b> </legend>
+</f:section>
+
+<f:section name="content">
+    <f:if condition="{deciderObjects}">
+        <f:then>
+            <f:form action="addDecisionToFeature" objectName="decider">
+                <f:form.hidden property="feature" value="{feature}" />
+
+                <div class="neos-row-fluid">
+                    <div class="neos-span5">
+                        <div class="neos-control-group{f:validation.ifHasErrors(for: 'conditionA', then: ' neos-error')}">
+                            <label class="neos-control-label" for="decider">Decider</label>
+                            <div class="neos-controls">
+                                <f:form.select property="deciderClass" optionValueField="deciderClass" optionLabelField="deciderName" id="deciderSelect" options="{deciderObjects}" class="neos-span12" />
+                                <f:render partial="Module/Shared/FieldValidationResults" arguments="{fieldname: 'decider'}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="neos-footer">
+                    <f:link.action action="listFeatures" class="neos-button">Cancel</f:link.action>
+                    <f:form.submit value="Add decisions" class="neos-button neos-button-primary"/>
+                </div>
+            </f:form>
+        </f:then>
+        <f:else>
+            <h2>No Decider to choose.</h2>
+            <p>You can not add any decision. You may have set all possible deciders. </p>
+            <div class="neos-footer">
+                <f:link.action action="listFeatures" controller="FeatureModuleController" class="neos-button">Back</f:link.action>
+            </div>
+        </f:else>
+    </f:if>
+</f:section>

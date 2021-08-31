@@ -1,24 +1,19 @@
 <?php
-
 namespace Wysiwyg\ABTesting\Domain\Http;
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\Component\ComponentContext;
 use Neos\Flow\Http\Component\ComponentInterface;
 use Neos\Flow\Http\Cookie;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Response;
 use Wysiwyg\ABTesting\Domain\Model\Feature;
 use Wysiwyg\ABTesting\Domain\Service\DecisionService;
 use Wysiwyg\ABTesting\Domain\Service\FeatureService;
+use Neos\Flow\Annotations as Flow;
+use Wysiwyg\CookieHandling\Domain\Service\CookieConsentService;
 
 class AbTestingCookieComponent implements ComponentInterface
 {
-    /**
-     * @Flow\InjectConfiguration(path="cookie")
-     * @var array
-     */
-    protected $cookieSettings;
 
     /**
      * @Flow\Inject
@@ -33,10 +28,12 @@ class AbTestingCookieComponent implements ComponentInterface
     protected $featureService;
 
     /**
-     * Sets an A/B Testing Cookie.
-     * When no cookie is set, a new one with new decisions will be added.
-     * When a cookie exists, the cookie value will be updated if features couldn't be found in the cookie.
-     *
+     * @Flow\Inject
+     * @var CookieConsentService
+     */
+    protected $cookieConsentService;
+
+    /**
      * @param ComponentContext $componentContext
      * @return void
      * @api
@@ -46,60 +43,40 @@ class AbTestingCookieComponent implements ComponentInterface
         $request = $componentContext->getHttpRequest();
         $response = $componentContext->getHttpResponse();
 
-        $cookieParams = $request->getCookieParams();
-        if ($cookieParams && !array_key_exists($this->cookieSettings['name'], $cookieParams)) {
-            $this->createCookieToResponse($componentContext, $response);
-            return;
-        }
+        $cookieName = 'WYSIWYG_AB_TESTING';
 
-        $this->refreshResponseCookie($componentContext, $request, $response);
-    }
+        $abTestingCookie = new Cookie($cookieName, null, strtotime('+2 years'), null, null, '/', false, false);
 
-    /**
-     * Creates a new A/B Testing Cookie with decisions of all features.
-     *
-     * @param ComponentContext $componentContext
-     * @param ResponseInterface $response
-     */
-    private function createCookieToResponse(ComponentContext $componentContext, ResponseInterface $response)
-    {
-        $abTestingCookie = new Cookie($this->cookieSettings['name'], null, strtotime($this->cookieSettings['lifetime']), null, null, '/', false, false);
-        $decisionsAsJson = json_encode($this->decisionService->decideForAllFeatures());
-        $abTestingCookie->setValue($decisionsAsJson);
+        if ($request->hasCookie($cookieName)) {
+            $currentCookie = $request->getCookie($cookieName);
+            $currentCookieValue = json_decode($currentCookie->getValue(), true);
+            $activeFeatures = $this->featureService->getAllActiveFeatures();
 
-        $responseWithCookie = $response->withAddedHeader('Set-Cookie', (string)$abTestingCookie);
-        $componentContext->replaceHttpResponse($responseWithCookie);
-    }
+            if(is_array($currentCookieValue)) {
 
-    /**
-     * Refreshes the A/B Testing Cookie, if necessary.
-     * Checks for current decisions and add new decisions for features without a decision to the cookie.
-     *
-     * @param ComponentContext $componentContext
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     */
-    private function refreshResponseCookie(ComponentContext $componentContext, ServerRequestInterface $request, ResponseInterface $response)
-    {
-        $cookieParams = $request->getCookieParams();
-        $abTestingCookie = $cookieParams[$this->cookieSettings['name']] ?? '';
-        $currentCookieValue = json_decode($abTestingCookie, true);
-        $activeFeatures = $this->featureService->getAllActiveFeatures();
+                /**
+                 * @var Feature $activeFeature
+                 */
+                foreach ($activeFeatures as $activeFeature) {
+                    $featureName = str_replace(' ', '_', $activeFeature->getFeatureName());
 
-        if (is_array($currentCookieValue)) {
-            /** @var Feature $activeFeature */
-            foreach ($activeFeatures as $activeFeature) {
-                $featureName = str_replace(' ', '_', $activeFeature->getFeatureName());
-                if (!array_key_exists($featureName, $currentCookieValue)) {
-                    $currentCookieValue[$featureName] = $this->decisionService->getDecisionForFeature($activeFeature);
+                    if (!array_key_exists($featureName, $currentCookieValue)) {
+                        $currentCookieValue[$featureName] = $this->decisionService->getDecisionForFeature($activeFeature);
+                    }
                 }
+
+            } else {
+                $currentCookieValue = $this->decisionService->decideForAllFeatures();
             }
+
+            $abTestingCookie->setValue(json_encode($currentCookieValue));
+
+        } else {
+            $decisionsAsJson = json_encode($this->decisionService->decideForAllFeatures());
+            $abTestingCookie->setValue($decisionsAsJson);
         }
 
-        $abTestingCookie = new Cookie($this->cookieSettings['name'], null, strtotime($this->cookieSettings['lifetime']), null, null, '/', false, false);
-        $decisionsAsJson = json_encode($currentCookieValue);
-        $abTestingCookie->setValue($decisionsAsJson);
-        $responseWithCookie = $response->withAddedHeader('Set-Cookie', (string)$abTestingCookie);
-        $componentContext->replaceHttpResponse($responseWithCookie);
+        $this->cookieConsentService->tryAddCookie($abTestingCookie);
+        $componentContext->replaceHttpResponse($response);
     }
 }
