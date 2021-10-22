@@ -1,5 +1,5 @@
 prototype(Wysiwyg.ABTesting:ABTestingContainer) {
-    @context.testingAorB = ${Wysiwyg.ABTesting.Decisions.getDecisionForFeatureByIdentifier(q(node).property('abTest'), request.arguments.forceABVersion)}
+    @context.testingAorB = ${Wysiwyg.ABTesting.Decisions.getDecisionForFeatureByIdentifier(String.toString(q(node).property('abTest')), request.arguments.forceABVersion)}
     abTestFeature = ${Wysiwyg.ABTesting.Features.getFeatureById(q(node).property('abTest'))}
 
     items = Neos.Fusion:Case {
@@ -12,19 +12,19 @@ prototype(Wysiwyg.ABTesting:ABTestingContainer) {
         caseB {
             condition = ${testingAorB == 'b'}
             renderer = Neos.Neos:ContentCollection {
-                nodePath = 'itemsB'
+                nodePath = 'itemsb'
             }
         }
         caseC {
             condition = ${testingAorB == 'c'}
             renderer = Neos.Neos:ContentCollection {
-                nodePath = 'itemsC'
+                nodePath = 'itemsc'
             }
         }
         default {
             condition = ${true}
             renderer = Neos.Neos:ContentCollection {
-                nodePath = 'itemsA'
+                nodePath = 'itemsa'
             }
         }
     }
@@ -34,6 +34,7 @@ prototype(Wysiwyg.ABTesting:ABTestingContainer) {
         context {
             1 = 'node'
             2 = 'documentNode'
+            3 = 'site'
         }
     }
 }
@@ -63,20 +64,20 @@ prototype(Wysiwyg.ABTesting:ABTestingContainer.BackendView) < prototype(Neos.Fus
         tabContent = Neos.Fusion:Array {
             tabPaneA = Wysiwyg.AbTesting:Component.Molecule.TabPane {
                 content = Neos.Neos:ContentCollection {
-                    nodePath = 'itemsA'
+                    nodePath = 'itemsa'
                 }
                 id = ${'ab-container-a-' + props.nodeIdentifier}
                 active = true
             }
             tabPaneB = Wysiwyg.AbTesting:Component.Molecule.TabPane {
                 content = Neos.Neos:ContentCollection {
-                    nodePath = 'itemsB'
+                    nodePath = 'itemsb'
                 }
                 id = ${'ab-container-b-' + props.nodeIdentifier}
             }
             tabPaneC = Wysiwyg.AbTesting:Component.Molecule.TabPane {
                 content = Neos.Neos:ContentCollection {
-                    nodePath = 'itemsC'
+                    nodePath = 'itemsc'
                 }
                 id = ${'ab-container-c-' + props.nodeIdentifier}
             }

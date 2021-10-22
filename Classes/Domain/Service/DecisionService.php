@@ -35,7 +35,7 @@ class DecisionService
     protected $decisionRepository;
 
     /**
-     * @Flow\InjectConfiguration( package="Wysiwyg.AbTesting", path="comparatorClassName")
+     * @Flow\InjectConfiguration(path="comparatorClassName")
      * @var array
      */
     protected $configuredComparatorClass;

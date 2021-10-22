@@ -16,7 +16,7 @@ class DeciderFactory
     private $testDecider = [];
 
     /**
-     * @Flow\InjectConfiguration( package="Wysiwyg.AbTesting", path="deciders")
+     * @Flow\InjectConfiguration(path="deciders")
      * @var array
      */
     protected $deciderSettings;

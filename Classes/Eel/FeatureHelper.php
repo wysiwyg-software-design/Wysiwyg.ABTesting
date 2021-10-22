@@ -17,18 +17,18 @@ class FeatureHelper implements ProtectedContextAwareInterface
 
     /**
      * Returns a feature found by it's Id.
-     * If no feature found, the parameter $featureId will be returned.
      *
      * @param string $featureId
-     * @return Feature | string
+     *
+     * @return Feature|null
      */
-    public function getFeatureById($featureId)
+    public function getFeatureById(string $featureId):?Feature
     {
         if ($featureId) {
             return $this->featureRepository->findByIdentifier($featureId);
         }
 
-        return $featureId;
+        return null;
     }
 
     /**

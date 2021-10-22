@@ -90,6 +90,7 @@ class DecisionHelper implements ProtectedContextAwareInterface
             case 'getDecisionForFeature':
             case 'getAllDecisions':
             case 'getDecisionForFeatureByName':
+            case 'getDecisionForFeatureByIdentifier':
                 return true;
         }
 
