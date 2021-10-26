@@ -24,7 +24,7 @@ class DecisionHelper implements ProtectedContextAwareInterface
     protected $featureRepository;
 
     /**
-     * Returns a calculated decision-string for given Test by Name
+     * Returns a calculated decision-string for given feature.
      *
      * @param Feature $feature
      * @param string $forcedDecision

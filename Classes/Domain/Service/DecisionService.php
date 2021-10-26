@@ -141,9 +141,11 @@ class DecisionService
         $cookieName = $this->cookieSettings['name'] ?? 'WYSIWYG_AB_TESTING';
 
         if (array_key_exists($cookieName, $_COOKIE)) {
-            $decisionsArray = json_decode($_COOKIE[$cookieName], true);
+            $decisionsArray = json_decode(urldecode($_COOKIE[$cookieName]), true);
 
-            return array_key_exists($featureName, $decisionsArray) ? $decisionsArray[$featureName] : '';
+            if (is_array($decisionsArray)) {
+                return array_key_exists($featureName, $decisionsArray) ? $decisionsArray[$featureName] : '';
+            }
         }
 
         return '';
