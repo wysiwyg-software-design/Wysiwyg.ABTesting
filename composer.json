@@ -5,8 +5,7 @@
     "type": "neos-plugin",
     "require": {
         "php": ">=7.1",
-        "neos/neos": ">=4.3 <6.0",
-        "wy/cookie-handling": "^1.0"
+        "neos/neos": ">=4.3 <6.0"
     },
     "autoload": {
         "psr-4": {

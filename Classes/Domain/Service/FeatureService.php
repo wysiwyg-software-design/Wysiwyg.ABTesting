@@ -39,6 +39,14 @@ class FeatureService
     protected $featureRepository;
 
     /**
+     * Finds all document nodes which includes the given features.
+     * Currently it only get's the parent of the parent of the container which is always the documentNode.
+     *
+     * NodeTree must apply the following structure:
+     *  DocumentNode (parent)
+     *      ContentCollection (parent)
+     *          ABTestingContainer
+     *
      * @param Feature $feature
      * @return array
      * @throws \Neos\Eel\Exception
@@ -68,12 +76,12 @@ class FeatureService
     }
 
     /**
+     * Wrapper method to get allActiveFeatures.
+     *
      * @return array
      */
-    public function getAllActiveFeatures()
+    public function getAllActiveFeatures(): array
     {
         return $this->featureRepository->getAllActiveFeatures();
-
     }
-
 }

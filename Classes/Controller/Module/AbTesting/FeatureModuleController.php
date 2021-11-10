@@ -53,8 +53,11 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Feature $feature
+     *
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
-    public function createFeatureAction($feature)
+    public function createFeatureAction(Feature $feature)
     {
         $existingFeature = $this->featureRepository->findOneByFeatureName($feature->getFeatureName());
 
@@ -74,32 +77,30 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Feature $feature
+     *
+     * @throws \Neos\Eel\Exception
      */
-    public function showFeatureAction($feature)
+    public function showFeatureAction(Feature $feature)
     {
-        if ($feature) {
-            $decisions = $this->decisionRepository->findByFeature($feature);
-            $pages = $this->featureService->getPagesWithFeature($feature);
+        $decisions = $this->decisionRepository->findByFeature($feature);
+        $pages = $this->featureService->getPagesWithFeature($feature);
 
-            $this->view->assignMultiple([
-                'decisions' => $decisions,
-                'feature' => $feature,
-                'pages' => $pages
-            ]);
-        }
+        $this->view->assignMultiple([
+            'decisions' => $decisions,
+            'feature' => $feature,
+            'pages' => $pages
+        ]);
     }
 
     /**
      * @param Feature $feature
+     *
+     * @throws \Neos\Eel\Exception
      */
-    public function deleteFeatureAction($feature)
+    public function deleteFeatureAction(Feature $feature)
     {
         $pages = $this->featureService->getPagesWithFeature($feature);
-        $deletable = true;
-
-        if (count($pages) > 0) {
-            $deletable = false;
-        }
+        $deletable = count($pages) == 0;
 
         $this->view->assignMultiple([
             'feature' => $feature,
@@ -110,8 +111,11 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Feature $feature
+     *
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
-    public function deleteFeatureConfirmedAction($feature)
+    public function deleteFeatureConfirmedAction(Feature $feature)
     {
         $this->featureRepository->remove($feature);
         $decisions = $this->decisionRepository->findByFeature($feature);
@@ -126,22 +130,23 @@ class FeatureModuleController extends AbstractModuleController
     /**
      * @param Feature $feature
      */
-    public function editFeatureAction($feature)
+    public function editFeatureAction(Feature $feature)
     {
-        if ($feature) {
-            $decisions = $this->decisionRepository->findByFeature($feature);
+        $decisions = $this->decisionRepository->findByFeature($feature);
 
-            $this->view->assignMultiple([
-                'decisions' => $decisions,
-                'feature' => $feature
-            ]);
-        }
+        $this->view->assignMultiple([
+            'decisions' => $decisions,
+            'feature' => $feature
+        ]);
     }
 
     /**
      * @param Feature $feature
+     *
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
-    public function updateFeatureAction($feature)
+    public function updateFeatureAction(Feature $feature)
     {
         if ($feature) {
             $this->featureRepository->update($feature);
@@ -152,14 +157,13 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Feature $feature
+     *
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
-    public function toggleActiveAction($feature)
+    public function toggleActiveAction(Feature $feature)
     {
-        if ($feature->isActive()) {
-            $feature->setActive(false);
-        } else {
-            $feature->setActive(true);
-        }
+        $feature->setActive(!$feature->isActive());
 
         $this->featureRepository->update($feature);
         $this->persistenceManager->persistAll();
@@ -170,7 +174,7 @@ class FeatureModuleController extends AbstractModuleController
     /**
      * @param Feature $feature
      */
-    public function showPagesAction($feature)
+    public function showPagesAction(Feature $feature)
     {
         $pages = $this->featureService->getPagesWithFeature($feature);
         $this->view->assignMultiple([
@@ -182,23 +186,19 @@ class FeatureModuleController extends AbstractModuleController
     /**
      * @param Feature $feature
      */
-    public function chooseDeciderAction($feature)
+    public function chooseDeciderAction(Feature $feature)
     {
         $deciderObjectsRaw = $this->decisionService->getAllDeciderObjects();
 
         $assignableDeciderObjects = [];
         $deciderToIgnore = [];
 
-        /**
-         * @var Decision $decision
-         */
+        /** @var Decision $decision */
         foreach ($feature->getDecisions() as $decision) {
             $deciderToIgnore[] = $decision->getDecider();
         }
 
-        /**
-         * @var DeciderObject $deciderObject
-         */
+        /** @var DeciderObject $deciderObject */
         foreach ($deciderObjectsRaw as $deciderObject) {
             if (!in_array($deciderObject->getDeciderName(), $deciderToIgnore)) {
                 $assignableDeciderObjects[] = $deciderObject;
@@ -214,7 +214,7 @@ class FeatureModuleController extends AbstractModuleController
     /**
      * @param DeciderObject $decider
      */
-    public function addDecisionToFeatureAction($decider)
+    public function addDecisionToFeatureAction(DeciderObject $decider)
     {
         $deciderClass = $decider->getDeciderClass();
         $deciderObject = new $deciderClass;
@@ -238,8 +238,11 @@ class FeatureModuleController extends AbstractModuleController
 
     /**
      * @param Decision $decision
+     *
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
-    public function saveDecisionToFeatureAction($decision)
+    public function saveDecisionToFeatureAction(Decision $decision)
     {
         $decision->setPriority(0);
         $this->decisionRepository->add($decision);
@@ -250,17 +253,18 @@ class FeatureModuleController extends AbstractModuleController
     /**
      * @param Decision $decision
      */
-    public function editDecisionAction($decision)
+    public function editDecisionAction(Decision $decision)
     {
         $this->view->assign('decision', $decision);
     }
 
     /**
      * @param Decision $decision
+     *
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
      * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
-    public function updateDecisionAction($decision)
+    public function updateDecisionAction(Decision $decision)
     {
         $total = 0;
         foreach ($decision->getDecision() as $version => $percentage) {
@@ -280,15 +284,18 @@ class FeatureModuleController extends AbstractModuleController
     /**
      * @param Decision $decision
      */
-    public function deleteDecisionAction($decision)
+    public function deleteDecisionAction(Decision $decision)
     {
         $this->view->assign('decision', $decision);
     }
 
     /**
      * @param Decision $decision
+     *
+     * @throws \Neos\Flow\Mvc\Exception\StopActionException
+     * @throws \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
-    public function deleteDecisionConfirmedAction($decision)
+    public function deleteDecisionConfirmedAction(Decision $decision)
     {
         $this->decisionRepository->remove($decision);
         $this->addFlashMessage('Decision has been deleted.', '', Error\Message::SEVERITY_NOTICE);
