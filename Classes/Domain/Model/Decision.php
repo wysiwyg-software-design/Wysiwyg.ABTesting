@@ -2,9 +2,9 @@
 
 namespace Wysiwyg\ABTesting\Domain\Model;
 
-use Wysiwyg\ABTesting\Domain\Decider\DeciderInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Neos\Flow\Annotations as Flow;
+use Wysiwyg\ABTesting\Domain\Decider\DeciderInterface;
 
 /**
  * @Flow\Entity
@@ -15,7 +15,7 @@ class Decision
     /**
      * @var DeciderInterface
      */
-    protected $decider;
+    protected $deciderClassName;
 
     /**
      * @var Feature
@@ -30,61 +30,19 @@ class Decision
     protected $decision = [];
 
     /**
-     * @var string
-     */
-    protected $defaultDecision;
-
-    /**
-     * @var integer
-     */
-    protected $priority;
-
-    /**
-     * @return DeciderInterface
-     */
-    public function getDecider()
-    {
-        return new $this->decider;
-    }
-
-    /**
-     * @param DeciderInterface $decider
-     */
-    public function setDecider($decider)
-    {
-        $this->decider = $decider;
-    }
-
-    /**
      * @return string
      */
-    public function getDefaultDecision()
+    public function getDeciderClassName()
     {
-        return $this->defaultDecision;
+        return $this->deciderClassName;
     }
 
     /**
-     * @param string $defaultDecision
+     * @param string $deciderClassName
      */
-    public function setDefaultDecision($defaultDecision)
+    public function setDeciderClassName(string $deciderClassName)
     {
-        $this->defaultDecision = $defaultDecision;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPriority()
-    {
-        return $this->priority;
-    }
-
-    /**
-     * @param int $priority
-     */
-    public function setPriority($priority)
-    {
-        $this->priority = $priority;
+        $this->deciderClassName = $deciderClassName;
     }
 
     /**
@@ -117,5 +75,13 @@ class Decision
     public function setDecision($decision)
     {
         $this->decision = $decision;
+    }
+
+    /**
+     * @return DeciderInterface
+     */
+    public function getDecider()
+    {
+        return new $this->deciderClassName;
     }
 }

@@ -15,7 +15,7 @@ use Wysiwyg\CookieHandling\Domain\Service\CookieConsentService;
 class AbTestingCookieComponent implements ComponentInterface
 {
     /**
-     * @Flow\InjectConfiguration(path="cookie")
+     * @Flow\InjectConfiguration(package="Wysiwyg.ABTesting", path="cookie")
      * @var array
      */
     protected $cookieSettings;
