@@ -8,7 +8,7 @@
 <f:section name="content">
     <f:form action="saveDecisionToFeature" objectName="decision">
         <f:form.hidden property="feature" value="{feature}" />
-        <f:form.hidden property="decider.__type" value="{deciderClass}" />
+        <f:form.hidden property="deciderClassName" value="{deciderClass}" />
 
         <div class="neos-row-fluid">
             <f:render partial="DecisionInputSection" arguments="{_all}"/>

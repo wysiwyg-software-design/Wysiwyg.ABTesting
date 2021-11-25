@@ -13,7 +13,7 @@ class Decision
 {
 
     /**
-     * @var DeciderInterface
+     * @var string
      */
     protected $deciderClassName;
 
@@ -28,6 +28,11 @@ class Decision
      * @ORM\Column(type="json_array")
      */
     protected $decision = [];
+
+    /**
+     * @var string
+     */
+    protected $defaultDecision;
 
     /**
      * @return string
@@ -75,6 +80,22 @@ class Decision
     public function setDecision($decision)
     {
         $this->decision = $decision;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultDecision(): string
+    {
+        return $this->defaultDecision;
+    }
+
+    /**
+     * @param string $defaultDecision
+     */
+    public function setDefaultDecision(string $defaultDecision): void
+    {
+        $this->defaultDecision = $defaultDecision;
     }
 
     /**

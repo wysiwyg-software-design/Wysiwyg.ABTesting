@@ -227,16 +227,6 @@ class FeatureModuleController extends AbstractModuleController
     }
 
     /**
-     * we need to allow the property mapper to override the decider class name from the request to map correctly for "saveDecisionToFeature".
-     */
-    public function initializeSaveDecisionToFeatureAction()
-    {
-        /* @var $propertyMappingConfiguration \Neos\Flow\Property\PropertyMappingConfiguration */
-        $propertyMappingConfiguration = $this->arguments['decision']->getPropertyMappingConfiguration();
-        $propertyMappingConfiguration->forProperty('decider')->setTypeConverterOption(ObjectConverter::class, ObjectConverter::CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED, true);
-    }
-
-    /**
      * @param Decision $decision
      *
      * @throws \Neos\Flow\Mvc\Exception\StopActionException
@@ -244,7 +234,6 @@ class FeatureModuleController extends AbstractModuleController
      */
     public function saveDecisionToFeatureAction(Decision $decision)
     {
-        $decision->setPriority(0);
         $this->decisionRepository->add($decision);
         $this->addFlashMessage('Decider has been added.');
         $this->redirect('listFeatures');
