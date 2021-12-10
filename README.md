@@ -23,9 +23,10 @@ This package offers a node container for displaying two different nodes for two 
 
 You can add the A/B testing container to your constraints: `Wysiwyg.ABTesting:ABTestingContainer`  
 
-The container has two contentCollections:
+The container has three contentCollections:
 * itemsa
 * itemsb
+* itemsc
 
 By default these collections accept all content nodes.
 This can be changed by overriding the respective node configuration in your own NodeTypes.yaml file.
@@ -44,10 +45,12 @@ For viewing a different version add the "forceABVersion" GET-parameter into the 
   
   
 Example:  
-Show Version A  
-```https://example.com/greatFeature.html?forceABVersion=a```  
-Show Version B  
-```https://example.com/greatFeature.html?forceABVersion=b```  
+Show Version A
+```https://example.com/greatFeature.html?forceABVersion=a```
+Show Version B
+```https://example.com/greatFeature.html?forceABVersion=b```
+Show Version C
+```https://example.com/greatFeature.html?forceABVersion=c```
 
 This parameter will not override the cookie value.
 
