@@ -6,7 +6,6 @@ use Wysiwyg\ABTesting\Domain\Model\Feature;
 
 class DeciderObject
 {
-
     /**
      * @var string
      */

@@ -5,14 +5,12 @@ namespace Wysiwyg\ABTesting\Domain\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Neos\Flow\Annotations as Flow;
-use Wysiwyg\ABTesting\Domain\Decider\DeciderInterface;
 
 /**
  * @Flow\Entity
  */
 class Feature
 {
-
     /**
      * @var string
      */
@@ -76,7 +74,4 @@ class Feature
     {
         $this->decisions = $decisions;
     }
-
-
-
 }

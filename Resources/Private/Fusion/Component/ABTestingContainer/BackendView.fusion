@@ -1,0 +1,49 @@
+prototype(Wysiwyg.ABTesting:Component.ABTestingContainer.BackendView) < prototype(Neos.Fusion:Component) {
+    nodeIdentifier = ''
+
+    renderer = Wysiwyg.AbTesting:Component.Organism.Tabs {
+        tabNavigation = Wysiwyg.AbTesting:Component.Molecule.TabNavigation {
+            tabs = Neos.Fusion:Array {
+                tabA = Wysiwyg.AbTesting:Component.Molecule.Tab {
+                    target = ${'#ab-container-a-' + props.nodeIdentifier}
+                    text = 'items A'
+                    active = true
+                }
+
+                tabB = Wysiwyg.AbTesting:Component.Molecule.Tab {
+                    target = ${'#ab-container-b-' + props.nodeIdentifier}
+                    text = 'items B'
+                }
+
+                tabC = Wysiwyg.AbTesting:Component.Molecule.Tab {
+                    target = ${'#ab-container-c-' + props.nodeIdentifier}
+                    text = 'items C'
+                }
+            }
+        }
+
+        tabContent = Neos.Fusion:Array {
+            tabPaneA = Wysiwyg.AbTesting:Component.Molecule.TabPane {
+                content = Neos.Neos:ContentCollection {
+                    nodePath = 'itemsa'
+                }
+                id = ${'ab-container-a-' + props.nodeIdentifier}
+                active = true
+            }
+
+            tabPaneB = Wysiwyg.AbTesting:Component.Molecule.TabPane {
+                content = Neos.Neos:ContentCollection {
+                    nodePath = 'itemsb'
+                }
+                id = ${'ab-container-b-' + props.nodeIdentifier}
+            }
+
+            tabPaneC = Wysiwyg.AbTesting:Component.Molecule.TabPane {
+                content = Neos.Neos:ContentCollection {
+                    nodePath = 'itemsc'
+                }
+                id = ${'ab-container-c-' + props.nodeIdentifier}
+            }
+        }
+    }
+}

@@ -1,86 +1,20 @@
-prototype(Wysiwyg.ABTesting:ABTestingContainer) {
-    @context.testingAorB = ${Wysiwyg.ABTesting.Decisions.getDecisionForFeatureByIdentifier(String.toString(q(node).property('abTest')), request.arguments.forceABVersion)}
+prototype(Wysiwyg.ABTesting:ABTestingContainer) < prototype(Neos.Neos:ContentComponent) {
+    testingDecision = ${Wysiwyg.ABTesting.Decisions.getDecisionForFeatureByIdentifier(String.toString(q(node).property('abTest')), request.arguments.forceABVersion)}
     abTestFeature = ${Wysiwyg.ABTesting.Features.getFeatureById(q(node).property('abTest'))}
 
-    items = Neos.Fusion:Case {
-        backendView {
-            condition = ${node.context.inBackend == true}
-            renderer = Wysiwyg.ABTesting:ABTestingContainer.BackendView {
-                nodeIdentifier = ${node.identifier}
-            }
-        }
-        caseB {
-            condition = ${testingAorB == 'b'}
-            renderer = Neos.Neos:ContentCollection {
-                nodePath = 'itemsb'
-            }
-        }
-        caseC {
-            condition = ${testingAorB == 'c'}
-            renderer = Neos.Neos:ContentCollection {
-                nodePath = 'itemsc'
-            }
-        }
-        default {
-            condition = ${true}
-            renderer = Neos.Neos:ContentCollection {
-                nodePath = 'itemsa'
-            }
-        }
-    }
+    renderer = afx`
+        <div class="ab-testing-container" data-abtest-feature-name="{props.abTestFeature.featureName}">
+            <Wysiwyg.ABTesting:Component.ABTestingContainer.TestingCaseRenderer testingDecision={props.testingDecision} />
+        </div>
+    `
 
     @cache {
         mode = 'uncached'
+
         context {
             1 = 'node'
             2 = 'documentNode'
             3 = 'site'
-        }
-    }
-}
-
-prototype(Wysiwyg.ABTesting:ABTestingContainer.BackendView) < prototype(Neos.Fusion:Component) {
-
-    nodeIdentifier = ''
-
-    renderer = Wysiwyg.AbTesting:Component.Organism.Tabs {
-        tabNavigation = Wysiwyg.AbTesting:Component.Molecule.TabNavigation {
-            tabs = Neos.Fusion:Array {
-                tabA = Wysiwyg.AbTesting:Component.Molecule.Tab {
-                    target = ${'#ab-container-a-' + props.nodeIdentifier}
-                    text = 'A'
-                    active = true
-                }
-                tabB = Wysiwyg.AbTesting:Component.Molecule.Tab {
-                    target = ${'#ab-container-b-' + props.nodeIdentifier}
-                    text = 'B'
-                }
-                tabC = Wysiwyg.AbTesting:Component.Molecule.Tab {
-                    target = ${'#ab-container-c-' + props.nodeIdentifier}
-                    text = 'C'
-                }
-            }
-        }
-        tabContent = Neos.Fusion:Array {
-            tabPaneA = Wysiwyg.AbTesting:Component.Molecule.TabPane {
-                content = Neos.Neos:ContentCollection {
-                    nodePath = 'itemsa'
-                }
-                id = ${'ab-container-a-' + props.nodeIdentifier}
-                active = true
-            }
-            tabPaneB = Wysiwyg.AbTesting:Component.Molecule.TabPane {
-                content = Neos.Neos:ContentCollection {
-                    nodePath = 'itemsb'
-                }
-                id = ${'ab-container-b-' + props.nodeIdentifier}
-            }
-            tabPaneC = Wysiwyg.AbTesting:Component.Molecule.TabPane {
-                content = Neos.Neos:ContentCollection {
-                    nodePath = 'itemsc'
-                }
-                id = ${'ab-container-c-' + props.nodeIdentifier}
-            }
         }
     }
 }
