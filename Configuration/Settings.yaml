@@ -37,7 +37,7 @@ Neos:
   Flow:
     http:
       middlewares:
-        abTestingCookieComponent:
+        abTestingCookieMiddleware:
           middleware: Wysiwyg\ABTesting\Domain\Http\Middleware\AbTestingCookieMiddleware
           position: 'after redirect'
 
