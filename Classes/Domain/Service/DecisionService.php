@@ -3,23 +3,24 @@
 namespace Wysiwyg\ABTesting\Domain\Service;
 
 use Neos\Flow\Annotations as Flow;
-use Wysiwyg\ABTesting\Domain\Decider\DeciderInterface;
+use Wysiwyg\ABTesting\Domain\Comparator\ComparatorInterface;
 use Wysiwyg\ABTesting\Domain\Dto\DeciderObject;
 use Wysiwyg\ABTesting\Domain\Factory\DeciderFactory;
 use Wysiwyg\ABTesting\Domain\Model\Decision;
 use Wysiwyg\ABTesting\Domain\Model\Feature;
 use Wysiwyg\ABTesting\Domain\Repository\DecisionRepository;
 use Wysiwyg\ABTesting\Domain\Repository\FeatureRepository;
-use Wysiwyg\ABTesting\Domain\Session\ABTestingSession;
 
+/**
+ * The main access point to ask for feature decisions in code.
+ */
 class DecisionService
 {
-
     /**
-     * @Flow\Inject
-     * @var DeciderFactory
+     * @Flow\InjectConfiguration(path="cookie")
+     * @var array
      */
-    protected $deciderFactory;
+    protected $cookieSettings;
 
     /**
      * @Flow\Inject
@@ -34,10 +35,10 @@ class DecisionService
     protected $decisionRepository;
 
     /**
-     * @Flow\Inject
-     * @var ABTestingSession
+     * @Flow\InjectConfiguration(path="comparatorClassName")
+     * @var array
      */
-    protected $abTestingSession;
+    protected $configuredComparatorClass;
 
     /**
      * Returns a decision for AB Testing from a Feature.
@@ -48,60 +49,55 @@ class DecisionService
      * Since the decision is saved in Session, the session decision is leading and will be returned, if a decision
      * is already saved in Session.
      *
-     * @Flow\Session(autoStart = true)
      * @param Feature $feature
-     *
-     * @return string|null
+     * @return string
      */
-    public function getDecisionForFeature($feature)
+    public function getDecisionForFeature(Feature $feature): string
     {
-        if (!$feature->isActive()) {
-            return false;
-        }
-
         $featureName = $feature->getFeatureName();
         $decisionFromCookie = $this->getDecisionFromCookies($featureName);
-        $decisionFromSession = $this->abTestingSession->getDecisionForFeature($featureName);
-        $decision = $decisionFromCookie ?: $decisionFromSession;
+        $decisionsForFeature = $this->decisionRepository->findByFeature($feature);
 
-        if ($decision) {
-            return $decision;
+        if ($decisionFromCookie) {
+            return $decisionFromCookie;
         }
 
-        $decisionsForFeature = $this->decisionRepository->findByFeature($feature);
-        /**  @var Decision $singleDecision */
+        // We want to reuse the same comparator here
+        $comparator = $this->getComparator();
+        $decision = '';
+
+        /**
+         * @var Decision $singleDecision
+         */
         foreach ($decisionsForFeature as $singleDecision) {
             $decider = $singleDecision->getDecider();
+            $decision = $decider->decide($singleDecision->getDecision(), $comparator);
 
-            if (!$decider instanceof DeciderInterface) {
-                return null;
-            }
-
-            $decision = $decider->decide($singleDecision->getDecision());
             if (!$decision) {
-                return null;
+                return '';
             }
         }
-
-        $this->abTestingSession->setDecisionForFeature($featureName, $decision);
 
         return $decision;
     }
 
     /**
      * Returns all Decider Class Names without any Namespaces.
+     *
      * @return array
      */
-    public function getAllDeciderObjects()
+    public function getAllDeciderObjects(): array
     {
+        $featureFactory = new DeciderFactory();
+
         $deciderObjects = [];
 
-        foreach ($this->deciderFactory->getAllDeciders() as $deciderClassName) {
+        foreach ($featureFactory->getAllDecider() as $deciderClassName) {
             $lastSlashPosition = strrpos($deciderClassName, '\\');
             $deciderName = substr($deciderClassName, $lastSlashPosition + 1);
 
             $deciderObject = new DeciderObject();
-            $deciderObject->setDecider($deciderClassName);
+            $deciderObject->setDeciderClass($deciderClassName);
             $deciderObject->setDeciderName($deciderName);
 
             $deciderObjects[] = $deciderObject;
@@ -111,17 +107,24 @@ class DecisionService
     }
 
     /**
-     * Decides for every features which are configured in database.
+     * Decides for all features which are configured in database.
+     *
+     * @return string[]
      */
-    public function decideForAllFeatures()
+    public function decideForAllFeatures(): array
     {
         $features = $this->featureRepository->findAll();
+
         $decisions = [];
 
-        /** @var Feature $feature */
+        /**
+         * @var Feature $feature
+         */
         foreach ($features as $feature) {
-            if ($feature->isActive() && count($feature->getDecisions()) > 0) {
+            if ($feature->isActive()) {
+
                 $featureName = str_replace(' ', '_', $feature->getFeatureName());
+
                 $decisions[$featureName] = $this->getDecisionForFeature($feature);
             }
         }
@@ -130,30 +133,32 @@ class DecisionService
     }
 
     /**
-     * @param $featureName
-     * @param $decisionOverride
+     * @param string $featureName
+     * @return string
      */
-    public function forceDecisionOverrideForFeature($featureName, $decisionOverride)
+    public function getDecisionFromCookies(string $featureName): string
     {
-        $featureRepository = new FeatureRepository();
-        $feature = $featureRepository->findOneByFeatureName($featureName);
+        $cookieName = $this->cookieSettings['name'] ?? 'WYSIWYG_AB_TESTING';
 
-        if ($feature instanceof Feature) {
-            $this->abTestingSession->setDecisionForFeature($featureName, $decisionOverride);
+        if (array_key_exists($cookieName, $_COOKIE)) {
+            $decisionsArray = json_decode(urldecode($_COOKIE[$cookieName]), true);
+
+            if (is_array($decisionsArray)) {
+                return array_key_exists($featureName, $decisionsArray) ? $decisionsArray[$featureName] : '';
+            }
         }
+
+        return '';
     }
 
     /**
-     * @param string $featureName
-     * @return string|null
+     * Create the comparator to be used for decisions. Can be configured
+     * TODO: Should probably be a factory that can be injected
+     *
+     * @return ComparatorInterface
      */
-    public function getDecisionFromCookies($featureName)
+    protected function getComparator(): ComparatorInterface
     {
-        if(!array_key_exists('WYSIWYG_AB_TESTING', $_COOKIE)){
-            return null;
-        }
-        $decisionsArray = json_decode($_COOKIE['WYSIWYG_AB_TESTING'], true);
-
-        return array_key_exists($featureName, $decisionsArray) ? $decisionsArray[$featureName] : null;
+        return new $this->configuredComparatorClass;
     }
 }

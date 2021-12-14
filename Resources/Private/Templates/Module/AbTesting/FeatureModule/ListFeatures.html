@@ -3,19 +3,18 @@
 <f:layout name="BackendSubModule" />
 
 <f:section name="content">
-    <legend>A/B Test Features</legend>
     <div class="neos-row-fluid">
         <table class="neos-table">
             <thead>
             <tr>
-                <th>A/B Test feature name</th>
+                <th>A/B Test</th>
                 <th>Status</th>
                 <th>&nbsp;</th>
             </tr>
             </thead>
             <f:for each="{allFeatures}" key="index" as="feature">
                 <tr>
-                    <td><i class="icon-cog"></i> {feature.featureName}  </td>
+                    <td><i class="icon-cog"></i> {feature.featureName}</td>
                     <td>
                         <f:if condition="{feature.active}">
                             <f:then>
@@ -39,12 +38,12 @@
                                 </f:if>
                             </f:link.action>
 
-                            <f:link.action action="showFeature" arguments="{feature: feature}" class="neos-button neos-button-primary" title="Show Feature" additionalAttributes="{data-neos-toggle: 'tooltip'}">
-                                <i class="fas fa-info-circle icon-white"></i>
+                            <f:link.action action="showPages" controller="Module/AbTesting/PagesModule" arguments="{feature: feature}" class="neos-button neos-button-primary" title="Show Pages" additionalAttributes="{data-neos-toggle: 'tooltip'}">
+                                <i class="fas fa-eye icon-white"></i>
                             </f:link.action>
 
                             <f:link.action action="editFeature" arguments="{feature: feature}" class="neos-button neos-button-primary" title="Edit Feature" additionalAttributes="{data-neos-toggle: 'tooltip'}">
-                                <i class="fas fa-pencil-alt icon-white"></i>
+                                <i class="fas fa-edit icon-white"></i>
                             </f:link.action>
 
                             <f:link.action action="deleteFeature" arguments="{feature: feature}" class="neos-button neos-button-danger" title="Delete Feature" additionalAttributes="{data-neos-toggle: 'tooltip'}">
@@ -58,6 +57,6 @@
         </table>
     </div>
     <div class="neos-footer">
-        <f:link.action action="newFeature" class="neos-button neos-button-primary" title="New Feature">Create A/B Test Feature</f:link.action>
+        <f:link.action action="newFeature" class="neos-button neos-button-primary" title="New Feature">Create A/B Test</f:link.action>
     </div>
 </f:section>

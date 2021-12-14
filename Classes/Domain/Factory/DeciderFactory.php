@@ -2,8 +2,8 @@
 
 namespace Wysiwyg\ABTesting\Domain\Factory;
 
+use Neos\Flow\Annotations as Flow;
 use Wysiwyg\ABTesting\Domain\Decider\DeciderInterface;
-use Wysiwyg\ABTesting\Domain\Decider\PercentageDecider;
 
 class DeciderFactory
 {
@@ -13,9 +13,26 @@ class DeciderFactory
      *
      * @var array
      */
-    private $deciders = [
-        PercentageDecider::class
-    ];
+    private $testDecider = [];
+
+    /**
+     * @Flow\InjectConfiguration(path="deciders")
+     * @var array
+     */
+    protected $deciderSettings;
+
+    public function initializeObject()
+    {
+        $enabledDeciders = array_filter($this->deciderSettings, function ($element) {
+            return (array_key_exists('enabled', $element) && $element['enabled']);
+        });
+
+        foreach ($enabledDeciders as $enabledDecider => $enabledValue) {
+            if (class_exists('Wysiwyg\ABTesting\Domain\Decider\\' . $enabledDecider)) {
+                $this->testDecider[] = 'Wysiwyg\ABTesting\Domain\Decider\\' . $enabledDecider;
+            }
+        }
+    }
 
     /**
      * Gets an Instance of a Decider by Class name - since every Decider implements an
@@ -24,9 +41,9 @@ class DeciderFactory
      * @param $className
      * @return DeciderInterface
      */
-    public function getDecider($className)
+    public function getTestDecider($className)
     {
-        foreach ($this->deciders as $decider) {
+        foreach ($this->testDecider as $decider) {
             if ($className === $decider) {
                 return new $decider;
             }
@@ -35,8 +52,8 @@ class DeciderFactory
         return null;
     }
 
-    public function getAllDeciders()
+    public function getAllDecider()
     {
-        return $this->deciders;
+        return $this->testDecider;
     }
 }

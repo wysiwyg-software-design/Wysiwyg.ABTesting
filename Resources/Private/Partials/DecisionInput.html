@@ -1,0 +1,14 @@
+<div class="neos-control-group{f:validation.ifHasErrors(for: 'defaultDecision', then: ' neos-error')}">
+    <label class="neos-control-label" for="{property}">{label}</label>
+    <div class="neos-controls">
+        <f:if condition="{type}=='number'">
+            <f:then>
+                <f:form.textfield property="{property}" id="{property}" class="neos-span12" required="{required}" type="number" additionalAttributes="{min: 0, max: 100}"/>
+            </f:then>
+            <f:else>
+                <f:form.textfield property="{property}" id="{property}" class="neos-span12" required="{required}"/>
+            </f:else>
+        </f:if>
+        <f:render partial="Module/Shared/FieldValidationResults" arguments="{fieldname: fieldname}"/>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+prototype(Wysiwyg.ABTesting:Component.ABTestingContainer.TestingCaseRenderer) < prototype(Neos.Fusion:Component) {
+    testingDecision = ''
+
+    renderer = Neos.Fusion:Case {
+        backendView {
+            condition = ${node.context.inBackend == true}
+            renderer = Wysiwyg.ABTesting:Component.ABTestingContainer.BackendView {
+                nodeIdentifier = ${node.identifier}
+            }
+        }
+
+        caseB {
+            condition = ${props.testingDecision == 'b'}
+            renderer = Neos.Neos:ContentCollection {
+                nodePath = 'itemsb'
+            }
+        }
+
+        caseC {
+            condition = ${props.testingDecision == 'c'}
+            renderer = Neos.Neos:ContentCollection {
+                nodePath = 'itemsc'
+            }
+        }
+
+        default {
+            condition = ${true}
+            renderer = Neos.Neos:ContentCollection {
+                nodePath = 'itemsa'
+            }
+        }
+    }
+}

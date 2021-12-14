@@ -1,12 +1,14 @@
 'Wysiwyg.ABTesting:ABTestingContainer':
   superTypes:
-    'Neos.Neos:Content': TRUE
-    'Wysiwyg.ABTesting:ABTestingMixin': TRUE
+    'Neos.Neos:Content': true
+    'Wysiwyg.ABTesting:ABTestingMixin': true
   ui:
     label: 'A/B Testing Container'
-    inlineEditable: TRUE
+    inlineEditable: true
   childNodes:
-    itemsA:
+    itemsa:
       type: 'Neos.Neos:ContentCollection'
-    itemsB:
+    itemsb:
+      type: 'Neos.Neos:ContentCollection'
+    itemsc:
       type: 'Neos.Neos:ContentCollection'

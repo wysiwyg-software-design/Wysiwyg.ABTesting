@@ -1,0 +1,11 @@
+prototype(Wysiwyg.AbTesting:Component.Molecule.Tab) < prototype(Neos.Fusion:Component) {
+    target = ''
+    text = ''
+    active = false
+
+    renderer = afx`
+        <li class={'nav-item ' + (props.active ? 'active' : '')}>
+            <a href={props.target} class="nav-link" data-toggle="tab">{props.text}</a>
+        </li>
+    `
+}

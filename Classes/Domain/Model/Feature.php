@@ -5,7 +5,6 @@ namespace Wysiwyg\ABTesting\Domain\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Neos\Flow\Annotations as Flow;
-use Wysiwyg\ABTesting\Domain\Decider\DeciderInterface;
 
 /**
  * @Flow\Entity
@@ -27,12 +26,6 @@ class Feature
      * @var ArrayCollection<Wysiwyg\ABTesting\Domain\Model\Decision>
      */
     protected $decisions;
-
-    /**
-     * @ORM\Column(nullable=true)
-     * @var string
-     */
-    protected $defaultDecision = null;
 
     /**
      * @return string
@@ -80,21 +73,5 @@ class Feature
     public function setDecisions($decisions)
     {
         $this->decisions = $decisions;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefaultDecision()
-    {
-        return $this->defaultDecision;
-    }
-
-    /**
-     * @param string $defaultDecision
-     */
-    public function setDefaultDecision($defaultDecision)
-    {
-        $this->defaultDecision = $defaultDecision;
     }
 }

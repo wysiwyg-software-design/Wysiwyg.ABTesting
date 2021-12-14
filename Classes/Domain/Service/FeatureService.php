@@ -5,13 +5,15 @@ namespace Wysiwyg\ABTesting\Domain\Service;
 use Neos\ContentRepository\Domain\Model\Node;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Eel\FlowQuery\FlowQuery;
-use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Service\LinkingService;
+use Wysiwyg\ABTesting\Domain\Model\Feature;
 use Wysiwyg\ABTesting\Domain\Repository\FeatureRepository;
+use Neos\Flow\Annotations as Flow;
 
 class FeatureService
 {
+
     /**
      * @Flow\Inject
      * @var ContextFactoryInterface
@@ -45,11 +47,11 @@ class FeatureService
      *      ContentCollection (parent)
      *          ABTestingContainer
      *
-     * @param $feature
+     * @param Feature $feature
      * @return array
      * @throws \Neos\Eel\Exception
      */
-    public function getPagesWithFeature($feature)
+    public function getPagesWithFeature(Feature $feature): array
     {
         $flowQuery = new FlowQuery([$this->contextFactory->create()]);
         $currentSiteNode = $flowQuery->get(0)->getCurrentSiteNode();
@@ -60,6 +62,7 @@ class FeatureService
         $foundContainer = $q->find('[instanceof Wysiwyg.ABTesting:ABTestingContainer][abTest][abTest="' . $featureId . '"]')->get();
 
         $pageNodes = [];
+
         /**
          * @var Node $container
          */
@@ -69,6 +72,7 @@ class FeatureService
         }
 
         return $pageNodes;
+
     }
 
     /**
@@ -76,9 +80,8 @@ class FeatureService
      *
      * @return array
      */
-    public function getAllActiveFeatures()
+    public function getAllActiveFeatures(): array
     {
         return $this->featureRepository->getAllActiveFeatures();
     }
-
 }

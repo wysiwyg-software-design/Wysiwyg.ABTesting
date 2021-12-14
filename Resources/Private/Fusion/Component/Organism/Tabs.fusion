@@ -1,0 +1,17 @@
+prototype(Wysiwyg.AbTesting:Component.Organism.Tabs) < prototype(Neos.Fusion:Component) {
+    /**
+        PROPS:
+           - tabs
+     */
+    tabNavigation = ''
+    tabContent = ''
+
+    renderer = afx`
+        <div>
+            {props.tabNavigation}
+            <div class="tab-content">
+                {props.tabContent}
+            </div>
+        </div>
+    `
+}

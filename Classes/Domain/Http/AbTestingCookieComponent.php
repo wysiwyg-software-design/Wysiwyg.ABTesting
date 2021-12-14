@@ -6,8 +6,8 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\Component\ComponentContext;
 use Neos\Flow\Http\Component\ComponentInterface;
 use Neos\Flow\Http\Cookie;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Wysiwyg\ABTesting\Domain\Model\Feature;
 use Wysiwyg\ABTesting\Domain\Service\DecisionService;
 use Wysiwyg\ABTesting\Domain\Service\FeatureService;
@@ -15,7 +15,7 @@ use Wysiwyg\ABTesting\Domain\Service\FeatureService;
 class AbTestingCookieComponent implements ComponentInterface
 {
     /**
-     * @Flow\InjectConfiguration(path="cookie")
+     * @Flow\InjectConfiguration(package="Wysiwyg.ABTesting", path="cookie")
      * @var array
      */
     protected $cookieSettings;
@@ -38,6 +38,7 @@ class AbTestingCookieComponent implements ComponentInterface
      * When a cookie exists, the cookie value will be updated if features couldn't be found in the cookie.
      *
      * @param ComponentContext $componentContext
+     *
      * @return void
      * @api
      */
@@ -47,7 +48,7 @@ class AbTestingCookieComponent implements ComponentInterface
         $response = $componentContext->getHttpResponse();
 
         $cookieParams = $request->getCookieParams();
-        if ($cookieParams && !array_key_exists($this->cookieSettings['name'], $cookieParams)) {
+        if (!array_key_exists($this->cookieSettings['name'], $cookieParams)) {
             $this->createCookieToResponse($componentContext, $response);
             return;
         }
@@ -61,7 +62,7 @@ class AbTestingCookieComponent implements ComponentInterface
      * @param ComponentContext $componentContext
      * @param ResponseInterface $response
      */
-    private function createCookieToResponse(ComponentContext $componentContext, ResponseInterface $response)
+    protected function createCookieToResponse(ComponentContext $componentContext, ResponseInterface $response)
     {
         $abTestingCookie = new Cookie($this->cookieSettings['name'], null, strtotime($this->cookieSettings['lifetime']), null, null, '/', false, false);
         $decisionsAsJson = json_encode($this->decisionService->decideForAllFeatures());
@@ -79,17 +80,18 @@ class AbTestingCookieComponent implements ComponentInterface
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      */
-    private function refreshResponseCookie(ComponentContext $componentContext, ServerRequestInterface $request, ResponseInterface $response)
+    protected function refreshResponseCookie(ComponentContext $componentContext, ServerRequestInterface $request, ResponseInterface $response)
     {
         $cookieParams = $request->getCookieParams();
         $abTestingCookie = $cookieParams[$this->cookieSettings['name']] ?? '';
-        $currentCookieValue = json_decode($abTestingCookie, true);
+        $currentCookieValue = json_decode(urldecode(urldecode($abTestingCookie)), true);
         $activeFeatures = $this->featureService->getAllActiveFeatures();
 
         if (is_array($currentCookieValue)) {
             /** @var Feature $activeFeature */
             foreach ($activeFeatures as $activeFeature) {
                 $featureName = str_replace(' ', '_', $activeFeature->getFeatureName());
+
                 if (!array_key_exists($featureName, $currentCookieValue)) {
                     $currentCookieValue[$featureName] = $this->decisionService->getDecisionForFeature($activeFeature);
                 }

@@ -1,0 +1,20 @@
+'Wysiwyg.ABTesting:Content.NodeReference':
+  superTypes:
+    'Neos.Neos:Content': TRUE
+  ui:
+    label: 'Component Reference'
+    inlineEditable: TRUE
+    inspector:
+      groups:
+        additional:
+          label: 'Additional'
+  properties:
+    nodeReference:
+      type: reference
+      ui:
+        reloadIfChanged: true
+        inspector:
+          editorOptions:
+            nodeTypes: ['Neos.Neos:Content']
+          group: additional
+        label: 'Referenced Component'

@@ -2,7 +2,7 @@
 
 namespace Wysiwyg\ABTesting\Domain\Dto;
 
-use Wysiwyg\ABTesting\Domain\Decider\DeciderInterface;
+use Wysiwyg\ABTesting\Domain\Model\Feature;
 
 class DeciderObject
 {
@@ -12,19 +12,14 @@ class DeciderObject
     protected $deciderName;
 
     /**
-     * @var DeciderInterface
-     */
-    protected $decider;
-
-    /**
      * @var string
      */
-    protected $conditionA;
+    protected $deciderClass;
 
     /**
-     * @var string
+     * @var Feature
      */
-    protected $conditionB;
+    protected $feature;
 
     /**
      * @return string
@@ -43,50 +38,34 @@ class DeciderObject
     }
 
     /**
-     * @return DeciderInterface
-     */
-    public function getDecider()
-    {
-        return $this->decider;
-    }
-
-    /**
-     * @param DeciderInterface $deciderClass
-     */
-    public function setDecider($deciderClass)
-    {
-        $this->decider = $deciderClass;
-    }
-
-    /**
      * @return string
      */
-    public function getConditionA()
+    public function getDeciderClass()
     {
-        return $this->conditionA;
+        return $this->deciderClass;
     }
 
     /**
-     * @param string $conditionA
+     * @param string $deciderClass
      */
-    public function setConditionA($conditionA)
+    public function setDeciderClass($deciderClass)
     {
-        $this->conditionA = $conditionA;
+        $this->deciderClass = $deciderClass;
     }
 
     /**
-     * @return string
+     * @return Feature
      */
-    public function getConditionB()
+    public function getFeature(): Feature
     {
-        return $this->conditionB;
+        return $this->feature;
     }
 
     /**
-     * @param string $conditionB
+     * @param Feature $feature
      */
-    public function setConditionB($conditionB)
+    public function setFeature(Feature $feature): void
     {
-        $this->conditionB = $conditionB;
+        $this->feature = $feature;
     }
 }

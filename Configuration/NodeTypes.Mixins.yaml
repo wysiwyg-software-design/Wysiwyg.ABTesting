@@ -14,6 +14,7 @@
   properties:
     abTest:
       type: string
+      defaultValue: ''
       ui:
         label: 'A/B Test Feature'
         inspector:
@@ -21,4 +22,4 @@
           position: 10
           group: abTesting
           editorOptions:
-            dataSourceIdentifier: 'wysiwyg-abtesting-features'
+            dataSourceIdentifier: 'wysiwyg-abtesting-tests'

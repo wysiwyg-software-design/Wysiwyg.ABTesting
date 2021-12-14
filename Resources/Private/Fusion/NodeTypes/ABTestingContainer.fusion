@@ -1,37 +1,20 @@
 prototype(Wysiwyg.ABTesting:ABTestingContainer) < prototype(Neos.Neos:ContentComponent) {
-    feature = ${ q(node).property('abTest') }
-    forceCase = ${ request.arguments.forceABVersion }
-    testCase = ${ Wysiwyg.ABTesting.Decisions.getDecisionForFeature(this.feature, this.forceCase) }
+    testingDecision = ${Wysiwyg.ABTesting.Decisions.getDecisionForFeatureByIdentifier(String.toString(q(node).property('abTest')), request.arguments.forceABVersion)}
+    abTestFeature = ${Wysiwyg.ABTesting.Features.getFeatureById(q(node).property('abTest'))}
 
-    @context.testCase = ${ this.testCase }
-    @context.feature = ${ this.feature }
-
-    renderer = Wysiwyg.ABTesting:Component.TestingCaseRenderer {
-        testCase = ${ props.testCase }
-        @process.wrapDiv = afx`
-            <div class="abc">
-                { value }
-            </div>
-        `
-    }
+    renderer = afx`
+        <div class="ab-testing-container" data-abtest-feature-name="{props.abTestFeature.featureName}">
+            <Wysiwyg.ABTesting:Component.ABTestingContainer.TestingCaseRenderer testingDecision={props.testingDecision} />
+        </div>
+    `
 
     @cache {
-        mode = 'dynamic'
-        entryIdentifier {
-            node = ${node}
-        }
-
-        entryDiscriminator = ${Wysiwyg.ABTesting.Decisions.getDecisionForFeature(feature, request.arguments.forceABVersion)}
-
-        entryTags {
-            1 = ${Neos.Caching.nodeTag(node)}
-        }
+        mode = 'uncached'
 
         context {
             1 = 'node'
             2 = 'documentNode'
             3 = 'site'
-            4 = 'feature'
         }
     }
 }
