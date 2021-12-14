@@ -36,12 +36,10 @@ Neos:
                 title: 'Feature List'
   Flow:
     http:
-      chain:
-        process:
-          chain:
-            abTesting:
-              position: 'after redirect'
-              component: Wysiwyg\ABTesting\Domain\Http\AbTestingCookieComponent
+      middlewares:
+        abTestingCookieComponent:
+          middleware: Wysiwyg\ABTesting\Domain\Http\Middleware\AbTestingCookieMiddleware
+          position: 'after redirect'
 
 Wysiwyg:
   ABTesting:
