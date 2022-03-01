@@ -3,7 +3,7 @@ prototype(Wysiwyg.ABTesting:ABTestingContainer) < prototype(Neos.Neos:ContentCom
     abTestFeature = ${Wysiwyg.ABTesting.Features.getFeatureById(q(node).property('abTest'))}
 
     renderer = afx`
-        <div class="ab-testing-container" data-abtest-feature-name="{props.abTestFeature.featureName}">
+        <div class="ab-testing-container" data-abtest-feature-name={props.abTestFeature.featureName}>
             <Wysiwyg.ABTesting:Component.ABTestingContainer.TestingCaseRenderer testingDecision={props.testingDecision} />
         </div>
     `
