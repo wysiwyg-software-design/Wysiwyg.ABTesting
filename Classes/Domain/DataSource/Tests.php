@@ -2,6 +2,7 @@
 
 namespace Wysiwyg\ABTesting\Domain\DataSource;
 
+use Neos\ContentRepository\Domain\Model\NodeInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Neos\Service\DataSource\AbstractDataSource;
 use Neos\Neos\Service\DataSource\DataSourceInterface;
@@ -34,12 +35,12 @@ class Tests extends AbstractDataSource implements DataSourceInterface
      *
      * The return value must be JSON serializable data structure.
      *
-     * @param \Neos\ContentRepository\Domain\Model\NodeInterface $node The node that is currently edited (optional)
+     * @param NodeInterface $node The node that is currently edited (optional)
      * @param array $arguments Additional arguments (key / value)
      * @return mixed JSON serializable data
      * @api
      */
-    public function getData(\Neos\ContentRepository\Domain\Model\NodeInterface $node = null, array $arguments = [])
+    public function getData(NodeInterface $node = null, array $arguments = [])
     {
         return $this->getMappedFeaturesToSelectOptions();
     }
