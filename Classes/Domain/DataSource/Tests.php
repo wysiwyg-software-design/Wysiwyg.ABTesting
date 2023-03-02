@@ -17,7 +17,6 @@ class Tests extends AbstractDataSource implements DataSourceInterface
      */
     protected static $identifier = 'wysiwyg-abtesting-tests';
 
-
     /**
      * @Flow\Inject
      * @var FeatureRepository
@@ -40,7 +39,7 @@ class Tests extends AbstractDataSource implements DataSourceInterface
      * @return mixed JSON serializable data
      * @api
      */
-    public function getData(\Neos\ContentRepository\Domain\Model\NodeInterface $node = null, array $arguments)
+    public function getData(\Neos\ContentRepository\Domain\Model\NodeInterface $node = null, array $arguments = [])
     {
         return $this->getMappedFeaturesToSelectOptions();
     }
