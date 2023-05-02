@@ -1,7 +1,7 @@
 # wysiwyg* - Neos A/B Testing
 ![Neos Package](https://img.shields.io/badge/Neos-Package-blue.svg "Neos Package")
-![Neos Project](https://img.shields.io/badge/Neos-%20%3E=%203.2%20-blue.svg "Neos Project")
-![PHP 7.1 and above](https://img.shields.io/badge/PHP-%20%3E=%207.1%20-blue.svg "PHP >= 7.1")
+![Neos Project](https://img.shields.io/badge/Neos-%20%3E=%208.0%20-blue.svg "Neos Project")
+![PHP 7.1 and above](https://img.shields.io/badge/PHP-%20%3E=%208.1%20-blue.svg "PHP >= 8.1")
 
 This package provides a simple to use backend module and frontend container to run A/B tests in Neos.  
 
