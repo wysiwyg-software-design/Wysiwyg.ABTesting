@@ -87,3 +87,7 @@ const abTesting = {
 
 window.WY = window.WY || {};
 window.WY.AbTesting = abTesting;
+
+window.addEventListener('load', function () {
+  window.WY.AbTesting.init();
+});
