@@ -1,8 +1,8 @@
 {
   "name": "wysiwyg.abtesting",
-  "description": "Dependencies for Wysiwyg.ABTesting",
-  "license": "UNLICENSED",
-  "private": true,
+  "description": "Module to run A/B Tests in Neos",
+  "author": "wysiwyg software design GmbH",
+  "license": "MIT",
   "browserslist": [
     "defaults",
     "not ie 11",
