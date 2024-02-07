@@ -8,18 +8,14 @@ privilegeTargets:
 roles:
   'Neos.Neos:Administrator':
     privileges:
-      -
-        privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting'
+      - privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting'
         permission: GRANT
-      -
-        privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting.Feature'
+      - privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting.Feature'
         permission: GRANT
 
   'Wysiwyg.ABTesting:ABTester':
     privileges:
-      -
-        privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting'
+      - privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting'
         permission: GRANT
-      -
-        privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting.Feature'
+      - privilegeTarget: 'Wysiwyg.ABTesting:Module.AbTesting.Feature'
         permission: GRANT

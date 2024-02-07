@@ -1,0 +1,14 @@
+/.editorconfig export-ignore
+/.eslintignore export-ignore
+/.eslintrc export-ignore
+/.gitattributes export-ignore
+/.github export-ignore
+/.gitignore export-ignore
+/.jshintrc export-ignore
+/.nvmrc export-ignore
+/.prettierignore export-ignore
+/.prettierrc export-ignore
+/build.mjs export-ignore
+/Makefile export-ignore
+/package.json export-ignore
+/pnpm-lock.yaml export-ignore
