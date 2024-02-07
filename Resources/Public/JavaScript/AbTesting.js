@@ -1,3 +1,5 @@
+var WY = WY || {};
+
 WY.AbTesting = {
 
     abTestingCookieString: '',
@@ -87,4 +89,6 @@ WY.AbTesting = {
     }
 };
 
-let WY = WY || {};
+window.addEventListener('load', function () {
+  WY.AbTesting.init();
+});
