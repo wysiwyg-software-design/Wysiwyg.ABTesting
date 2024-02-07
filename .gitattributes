@@ -12,3 +12,4 @@
 /Makefile export-ignore
 /package.json export-ignore
 /pnpm-lock.yaml export-ignore
+/yarn.lock export-ignore
