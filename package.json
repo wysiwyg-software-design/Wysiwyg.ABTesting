@@ -14,7 +14,7 @@
     "dev": "node build.mjs"
   },
   "devDependencies": {
-    "esbuild": "^0.19.10",
+    "esbuild": "^0.25.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.2",
